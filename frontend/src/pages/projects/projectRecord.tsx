@@ -1,0 +1,73 @@
+import { useEffect, useState } from "react";
+import { ButtonGroup, Col, Container, Nav, Row } from "react-bootstrap";
+import { useNavigate, useParams } from "react-router-dom";
+import ProjectAPI from "../../api/ProjectsAPI";
+import GitHubLogo from "../../assets/github-mark.png";
+import { Link } from 'react-router-dom';
+import BackButton from "../../components/BackButton";
+export default function ProjectRecord(props:any){
+    const {id}=useParams();
+    const api=new ProjectAPI();
+    const [load,setLoad]=useState(false);
+    const [project,setProject]=useState({
+        name:"",
+        description:"",
+        url:""
+    });
+    
+    const [showLinks,setLinks]=useState(false);
+    const getProject=async ()=>{
+        try{
+            const project=await api.getProject(id);
+            setProject(project);
+            setLoad(true);
+            displayLinks(project.url);
+        }catch(err){
+            
+        }
+    }
+    const displayLinks=(url:string)=>{
+        if(url!==""){
+            setLinks(true);
+        }
+    }
+    useEffect(() => {
+        getProject();
+    },[]);
+    
+    return(
+        <div>
+        <Row>
+        <Col id="BackSection">
+        <ButtonGroup >
+        <div className="">
+        <br />
+        {load?
+        <BackButton url={"/projects"}/>
+        :null}
+        </div>
+        </ButtonGroup>
+        
+        </Col>
+        <Col xs={8}>
+        <div>
+        <h1>{project.name}</h1>
+        </div>
+        <div id="DescriptionDiv">
+        <p>{project.description}</p>
+        </div>
+        </Col>
+        <Col>
+        {showLinks?
+        <div id="LinksDiv" className="CentreText">
+        <h2>GitHub</h2>
+        <a href={project.url}><img src={GitHubLogo} width={30} height={30} alt="GitRepo"/></a>
+        </div>
+        :null}
+        </Col>
+        </Row>
+      
+
+        </div>
+    );
+}

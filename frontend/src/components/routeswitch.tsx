@@ -2,6 +2,7 @@ import {  Routes, Route } from "react-router-dom";
 import navigation from "./navigation";
 import GuardWrapper from "./GuardWrapper";
 import GuardWrapperForm from "./formGenComponents/GuardWrapperForm";
+import GuardAuthorise from "./GuardAuthorise";
 export default function routeswtich(){
     var nav=new navigation();
     var routes=[];

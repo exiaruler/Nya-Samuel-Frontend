@@ -14,7 +14,7 @@ export default function home(){
             <Col id="Col2">
             <div className='CentreText'>
             <h1>Welcome to my world!</h1>
-            <p>Feel free to explore</p>
+            <p>This is my portfolio of my current projects that I am working on and completed projects</p>
             </div>
             
             </Col>

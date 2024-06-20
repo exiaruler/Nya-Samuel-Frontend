@@ -13,7 +13,7 @@ export default class navigation extends Util{
     layout=Navbar;
     
     // external url outside website
-    externalLinks=[
+    public externalLinks=[
         {
         "url":"https://www.linkedin.com/in/samuel-li-34ba34169/",
         "alt":"linkedIn",
@@ -31,15 +31,27 @@ export default class navigation extends Util{
         }
     ].filter((link)=>link.status===true);
     // pages access by logged in users
-
-    protectedRoutes=[
+    public protectedRoutes=[
 
     ];
+    // pages access for login
+    public accessRoutes=[
+        {"component":Login,
+            "module":"user",
+            "url":"/login",
+            "name":"Login",
+            "path":"login",
+            "enable":true,
+            "index":false,
+            "show":false
+        }
+    ].filter((route)=>route.enable===true);;
+
     header={
         "apikey":this.getApiKey()
     };
     // validate through GuardWrapper
-    routesParam=[
+    public routesParam=[
         {
         "component":ProjectRecord,
         "module":"project",
@@ -51,30 +63,47 @@ export default class navigation extends Util{
         "show":false,
         "guard":{
             "api":this.getApiUrl()+"/project/get-project/",
-            "config":{headers:this.header}
+            "config":{
+                headers:this.header}
         }
         },
     ];
-    /*
-    formRoute=[
+    
+    public formRoute=[
         {
         "component":Form,
         "module":"formgen",
         "url":"/form/:formId/:id",
         "name":"Form Record",
         "path":"/form/:formId/:id",
-        "enable":false,
+        "enable":true,
         "index":false,
         "show":false,
         "guard":{
             "api":this.getApiUrl()+"/form/get-form/",
-            "config":{headers:this.header}
+            "config":{headers:this.header,credentials: 'include'}
         }
         }
-    ].filter((route)=>route.enable===true);;
-    */
+    ].filter((route)=>route.enable===true);
+    // users ONLY
+    public formLinks=[
+        {
+            "component":Form,
+            "module":"formgen",
+            "url":"/form/project/0",
+            "name":"Add Project",
+            "path":"/form/project/0",
+            "enable":true,
+            "index":false,
+            "show":true,
+            "guard":{
+                "api":this.getApiUrl()+"/form/get-form/",
+                "config":{headers:this.header,credentials: 'include'}
+            }
+            }
+    ].filter((route)=>route.enable===true);
     // public routes
-    routes=[
+    public routes=[
         {"component":Home,
         "module":"nec",
         "url":"",
@@ -105,7 +134,7 @@ export default class navigation extends Util{
         "url":"/login",
         "name":"Login",
         "path":"login",
-        "enable":false,
+        "enable":true,
         "index":false,
         "show":false
         },

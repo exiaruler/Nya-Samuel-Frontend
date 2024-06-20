@@ -5,10 +5,18 @@ import {Project} from '../../base/interfaces/project';
 import ProjectAPI from '../../api/ProjectsAPI';
 import ProjectCard from '../../components/projects/ProjectCard';
 import { error } from 'console';
+import { useLocation, useNavigate } from 'react-router';
+import { ButtonComponent } from '../../components/ButtonComponent';
 
 // route links
 export default function Projects(){
   const api=new ProjectAPI();
+  const { state } = useLocation();
+  const nav=useNavigate();
+  let login=false;
+  if(state){
+  login=state.login;
+  }
   const [projects,setProject]=useState<Project[]>([]);
   const [loading,setloading]=useState(true);
   const getProjects=async()=>{
@@ -31,7 +39,7 @@ export default function Projects(){
     }
    
   }
-  
+
   useEffect(() => {
     getProjects();
   },[]);
@@ -53,7 +61,8 @@ export default function Projects(){
       {
         projects.map(project=>(
         <ListGroup.Item>
-        <ProjectCard name={project.name} description={project.description} url={project.url} key={project._id} id={project._id}/>
+        <ProjectCard name={project.name} description={project.description} url={project.url} key={project._id} id={project._id} login={login}/>
+        
         </ListGroup.Item>
         ))
       }

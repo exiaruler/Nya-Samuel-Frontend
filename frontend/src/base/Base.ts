@@ -5,12 +5,13 @@ class Base{
   // dev key
   private apikey=process.env.REACT_APP_API_KEY||"S7fgxFOTKTK8aCjq";
   // js vanilla fetch
-   public apiCallConfig(method:any){
+   public apiCallConfig(method:string){
       return{
         method:method,
         headers:{
+          'Content-Type': 'application/json',
           "apikey":this.getApiKey()
-        }
+        },
       };
     }
     

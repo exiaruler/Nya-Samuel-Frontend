@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Link,
     Outlet,
@@ -9,15 +9,30 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/samuel logo.png';
-export default function NavBar(){
+import Logout from './Logout';
+export default function NavBar(props:any){
     const [login,setLogin]=useState(false);
     // dev routes
     const [dev,setDev]=useState(false);
     var navigation = new Navigation();
-    const routes=navigation.routes.filter((route)=>route.show==true);
+    const routes=navigation.routes.filter((route)=>route.show===true);
     const home=routes[0];
+    let loginProp=false;
+    if(props.login){
+      loginProp=props.login;
+    }
+    // user links
+    const formsUser=navigation.formLinks.filter((link)=>link.show===true);
+    const checkLogin=()=>{
+      if(loginProp===true){
+        setLogin(true);
+      }
+    }
+    useEffect(() => {
+      checkLogin();
+   });
     return (
-        <div>
+    <div id="NavBar">
     <nav>
     <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="light">
       <Container>
@@ -27,11 +42,21 @@ export default function NavBar(){
           <Nav className="me-auto">
             {
                 routes.map(route=>(
-                    <Nav.Link><Link to={route.url}>{route.name}</Link></Nav.Link>
+                    <Nav.Link><Link to={route.url} state={{login:login}}>{route.name}</Link></Nav.Link>
                 ))
             }
+          {login?
+          <NavDropdown title="Tools" id="basic-nav-dropdown" >
+          {
+            formsUser.map(link=>(
+              <Nav.Link><Link to={link.url}>{link.name}</Link></Nav.Link> 
+            ))
+
+          }
+          <Nav.Link><Logout/></Nav.Link>
+          </NavDropdown>
+          :null}
           </Nav>
-          
           <Nav id="ExternalLinksBar">
           {
             navigation.externalLinks.map(links=>(

@@ -10,6 +10,14 @@ export default class ProjectAPI extends Util{
     public async getAllProjects(){
         const request=this.getApiUrl()+this.base+"get-all-project";
         try{
+            var config={
+                method:"GET",
+                credentials: 'include',
+                headers:{
+                    'Content-Type': 'application/json',
+                    apikey:this.getApiKey()
+                }
+            };
             const projectRequest=await fetch(request,this.apiCallConfig("GET"));
             if(!projectRequest.ok){
                 throw new Error('error happened');
@@ -22,14 +30,10 @@ export default class ProjectAPI extends Util{
             }
             return data;
         }catch(err){
-            console.error('Oh shit something happened');
-            throw err;
+            this.throwError(err);
         }
     }
     public async getProject(id:any){
-        const header={
-            "apikey":this.getApiKey()
-        };
         try{
             const request=await fetch(this.getApiUrl()+this.base+"get-project/"+id,this.apiCallConfig("GET"));
             if(!request.ok){
@@ -38,8 +42,23 @@ export default class ProjectAPI extends Util{
             var data=await request.json();
             return data;
         }catch(err){
-            console.error('Oh shit something happened');
-            throw err;
+            this.throwError(err);
+        }
+    }
+    public async deleteProject(id:any){
+        try{
+            var config:any={
+                method:'DELETE',
+                credentials: 'include',
+                headers:{
+                    'Content-Type': 'application/json',
+                    apikey:this.getApiKey()
+                }
+            };
+            const request=await fetch(this.getApiUrl()+this.base+"delete-project/"+id,config);
+            return await request;
+        }catch(err){
+            this.throwError(err);
         }
     }
 }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Url } from 'url';
 import Base from './Base';
-class Util extends Base {
+export class Util extends Base {
  // return user data promoise
     async getUser(){
       var data;
@@ -76,7 +76,12 @@ class Util extends Base {
     public setAttributeValue(element:any,attribute:any,value:any){
       document.getElementById(element)?.setAttribute(attribute,value);
     }
-    
-     
+    public throwError(err:any){
+      console.error('Oh shit something happened');
+      throw err;
+    }
+    public unauthorisedAccess(){
+      window.location.href='/';
+    }
 }
 export default Util;

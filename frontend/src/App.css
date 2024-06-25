@@ -57,6 +57,11 @@ body{
   color: #61dafb;
 }
 
+.paragraph-body{
+  margin: 20px;
+  white-space: pre-line;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Button, Col, Container, ListGroup, ListGroupItem, Row, Spinner, Table } from 'react-bootstrap';
+import { Col, Container, ListGroup, ListGroupItem, Row, Spinner} from 'react-bootstrap';
 import {Project} from '../../base/interfaces/project';
 import ProjectAPI from '../../api/ProjectsAPI';
 import ProjectCard from '../../components/projects/ProjectCard';
 import { error } from 'console';
 import { useLocation, useNavigate } from 'react-router';
-import { ButtonComponent } from '../../components/ButtonComponent';
+import Util from '../../base/Util';
 
 // route links
 export default function Projects(){
   const api=new ProjectAPI();
   const { state } = useLocation();
   const nav=useNavigate();
+  const util=new Util();
   let login=false;
   if(state){
   login=state.login;
@@ -62,7 +63,6 @@ export default function Projects(){
         projects.map(project=>(
         <ListGroup.Item>
         <ProjectCard name={project.name} description={project.description} url={project.url} key={project._id} id={project._id} login={login}/>
-        
         </ListGroup.Item>
         ))
       }

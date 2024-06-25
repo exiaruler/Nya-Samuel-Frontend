@@ -8,6 +8,7 @@ import GitHub from '../assets/github-mark.png';
 import Form from '../pages/formGen/form';
 import Util from '../base/Util';
 import Login from '../pages/user/login';
+import testBed from '../pages/user/dev/testBed';
 export default class navigation extends Util{
     // navbar/layout
     layout=Navbar;
@@ -32,8 +33,16 @@ export default class navigation extends Util{
     ].filter((link)=>link.status===true);
     // pages access by logged in users
     public protectedRoutes=[
-
-    ];
+        {"component":testBed,
+            "module":"user",
+            "url":"/testbed",
+            "name":"Test",
+            "path":"test",
+            "enable":true,
+            "index":false,
+            "show":true
+        }
+    ].filter((route)=>route.enable===true);
     // pages access for login
     public accessRoutes=[
         {"component":Login,
@@ -45,7 +54,7 @@ export default class navigation extends Util{
             "index":false,
             "show":false
         }
-    ].filter((route)=>route.enable===true);;
+    ].filter((route)=>route.enable===true);
 
     header={
         "apikey":this.getApiKey()

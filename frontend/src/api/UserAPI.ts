@@ -32,7 +32,6 @@ export default class UserAPI extends Util{
                 headers:this.header,
                 credentials: "include"
             });
-            //debugger;
             const response=request.status;
             if(response===200){
                 login=true;

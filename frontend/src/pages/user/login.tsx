@@ -63,8 +63,8 @@ export default function Login(){
         </Col>
         <Col>
         <Form onSubmit={submit}>
-        <FormGenText label={"Username"} type={"string"} name={"username"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.username} value={""}/>
-        <FormGenText label={"Password"} type={"password"} name={"password"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.password} value={""}/>
+        <FormGenText label={"Username"} type={"string"} name={"username"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.username} value={""} size={undefined}/>
+        <FormGenText label={"Password"} type={"password"} name={"password"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.password} value={""} size={undefined}/>
         <Alert variant='warning' key='warning' hidden={formErrorMsg.hide}>
         {formErrorMsg.error}
         </Alert>

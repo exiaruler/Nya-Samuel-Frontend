@@ -6,7 +6,8 @@ export type props={
     required:boolean,
     onChange:any,
     warning:string,
-    value:string
+    value:string,
+    size:any,
 }
 const defaultValue={
     required:false,

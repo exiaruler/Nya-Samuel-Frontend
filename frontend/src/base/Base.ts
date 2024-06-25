@@ -1,7 +1,7 @@
 // api domain and key
 class Base{
 
-  private apiURlBase=process.env.REACT_APP_API_URL||"http://localhost:8000";
+  private apiURlBase=process.env.REACT_APP_API_URL||"http://localhost:8000/api";
   // dev key
   private apikey=process.env.REACT_APP_API_KEY||"S7fgxFOTKTK8aCjq";
   // js vanilla fetch

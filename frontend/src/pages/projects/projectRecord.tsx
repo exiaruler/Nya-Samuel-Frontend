@@ -5,6 +5,7 @@ import ProjectAPI from "../../api/ProjectsAPI";
 import GitHubLogo from "../../assets/github-mark.png";
 import { Link } from 'react-router-dom';
 import BackButton from "../../components/BackButton";
+import ParagraphBody from "../../components/ParagraphBody";
 export default function ProjectRecord(props:any){
     const {id}=useParams();
     const api=new ProjectAPI();
@@ -39,23 +40,19 @@ export default function ProjectRecord(props:any){
         <div>
         <Row>
         <Col id="BackSection">
-        <ButtonGroup >
+        
         <div className="">
         <br />
         {load?
         <BackButton url={"/projects"}/>
         :null}
         </div>
-        </ButtonGroup>
-        
         </Col>
         <Col xs={8}>
         <div>
         <h1>{project.name}</h1>
         </div>
-        <div id="DescriptionDiv">
-        <p>{project.description}</p>
-        </div>
+        <ParagraphBody value={project.description}/>
         </Col>
         <Col>
         {showLinks?

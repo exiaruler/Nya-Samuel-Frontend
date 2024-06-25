@@ -26,12 +26,14 @@ export default function routeswtich(){
             <Routes>
                 <Route index element={<home.element/>}/>
                 {
+                    // regular page routes
                     routes.map(route=>(
                         <Route element={<route.element/>} path={route.path} />
                      
                     ))
                 }
                 {
+                    // record routes
                     paramRoutes.map(route=>(
                         <Route element={(
                             <GuardWrapper api={route.guard.api} config={route.guard.config} component={route.component}>
@@ -43,6 +45,7 @@ export default function routeswtich(){
                 }
                 
                 {
+                    // form routes
                     formRoute.map(route=>(
                         <Route element={(
                             <GuardWrapperForm api={route.guard.api} config={route.guard.config} component={route.component}>

@@ -16,7 +16,7 @@ export class FormGenText extends Component<props>{
             <Form.Group>
             <Form.Label>{this.props.label}</Form.Label>
             <div className="mb-3">
-            <Form.Control id={this.props.name+"Text"} required={this.props.required} onChange={this.props.onChange}  name={this.props.name} type={this.props.type} defaultValue={this.props.value} />
+            <Form.Control id={this.props.name+"Text"} required={this.props.required} onChange={this.props.onChange}  name={this.props.name} type={this.props.type} defaultValue={this.props.value} size={this.props.size} />
             </div>
             <Form.Text id={this.props.name+"Warning"}>{this.props.warning} </Form.Text>
             </Form.Group>

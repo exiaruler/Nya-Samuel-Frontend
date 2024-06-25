@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, ButtonGroup } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import BackLogo from "../assets/icons8-back-arrow-48.png";
 export default function BackButton(props:any){
@@ -22,10 +22,12 @@ export default function BackButton(props:any){
         nav(url);
     }
         return(
-            <div>
+            
+            <ButtonGroup >
             <Button variant="light" size="lg" onClick={goBackto} >
             <img src={BackLogo} alt="Back" width={width} height={height}/>
             </Button>
-            </div>
+            </ButtonGroup>
+            
         );
 }

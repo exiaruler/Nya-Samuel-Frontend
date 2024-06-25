@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import FormGenLibary from "./FormGenLibary";
 import { FormAPI } from "../../api/FormAPI";
@@ -12,12 +12,14 @@ const GuardWrapperForm=(props:any)=>{
     const util=new Util();
     const formApi=new FormAPI();
     var form:any;
+    const recordRef=useRef({});
     const [valid,setValid]=useState(false);
     const nav=useNavigate();
     const validateFormProm=()=>{
         const inHouseForm=formGen.forms;
         return new Promise<void>(async (resolve,reject)=>{
             var resolution=false;
+            // find form in client
             if(formId!==""){
                 for(var i=0; i<inHouseForm.length; i++){
                     if(formId===inHouseForm[i].param){
@@ -27,12 +29,18 @@ const GuardWrapperForm=(props:any)=>{
                         break;
                     }
                 }
+                // send api call for form
                 if(!resolution){
                     try {
                         const request=await fetch(api+formId,config);
                         if(request.ok){
                             const response=await request.json();
                             if(response){
+                                /*
+                                if(id!==""&&id!=="0"){
+                                    recordRef.current=getRecord(response.retrieveApi,id);
+                                }
+                                    */
                                 form=response;
                                 resolve();
                             }
@@ -46,7 +54,7 @@ const GuardWrapperForm=(props:any)=>{
             }
         }).then(
             function(){
-                if(id!==""&&id!="0"){
+                if(id!==""&&id!=="0"){
                     apiCall();
                 }
             },
@@ -55,6 +63,18 @@ const GuardWrapperForm=(props:any)=>{
             }
         );
         
+    }
+    const getRecord=async (api:any,id:any)=>{
+        var data=null;
+        try{
+            const request=await fetch(api+id,config);
+            if(request.ok){
+                data=await request.json(); 
+                return data 
+            }
+        }catch(error){
+            nav("/*");
+        }
     }
     const apiCall=async()=>{
         

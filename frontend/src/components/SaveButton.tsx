@@ -1,17 +1,16 @@
-import { Component } from "react";
-import {props} from './props/ButtonProp';
-import { Button } from "react-bootstrap";
-export class SaveButton extends Component<props>{
-    constructor(props:any) {
-        super(props);
-        this.state = {
-        };
-    }
+
+import { Button, ButtonGroup } from "react-bootstrap";
+import { ButtonComponent } from "./ButtonComponent";
+export class SaveButton extends ButtonComponent{
+    
+    
     render(){
         return(
-        <Button variant={this.props.variant||"primary"} type={this.props.type||"submit"}>
+        <ButtonGroup >
+        <Button variant={this.props.variant||"primary"} type={"submit"}>
         {this.props.caption}
-        </Button>    
+        </Button>   
+        </ButtonGroup> 
         );
     }
 }

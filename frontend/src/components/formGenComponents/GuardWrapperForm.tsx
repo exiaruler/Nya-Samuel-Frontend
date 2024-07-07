@@ -3,9 +3,11 @@ import { Navigate, useNavigate, useParams } from "react-router";
 import FormGenLibary from "./FormGenLibary";
 import { FormAPI } from "../../api/FormAPI";
 import Util from "../../base/Util";
+import { useLocation } from "react-router-dom";
 const GuardWrapperForm=(props:any)=>{
     const { id } = useParams();
     const {formId}=useParams();
+    const { state } = useLocation();
     const formGen=new FormGenLibary();
     const api=props.api;
     const config=props.config;
@@ -14,6 +16,7 @@ const GuardWrapperForm=(props:any)=>{
     var form:any;
     const recordRef=useRef({});
     const [valid,setValid]=useState(false);
+    var data=null;
     const nav=useNavigate();
     const validateFormProm=()=>{
         const inHouseForm=formGen.forms;
@@ -54,12 +57,15 @@ const GuardWrapperForm=(props:any)=>{
             }
         }).then(
             function(){
-                if(id!==""&&id!=="0"){
+                if(id!==""&&id!=="0"&&state==null){
                     apiCall();
+                }else if(state!=null&&state.record){
+                    setValid(true);
+                    data=state.record;
                 }
             },
             function(){
-                nav("/*");
+                nav("/*",{ state: { unauthorised:true } });
             }
         );
         
@@ -94,7 +100,7 @@ const GuardWrapperForm=(props:any)=>{
     }
     validateFormProm();
     return (id) 
-    ? <props.component form={form} />
+    ? <props.component form={form} record={data} />
     : <Navigate to={`/${formId}/${id}`} replace={true} />;
 }
 export default GuardWrapperForm;

@@ -6,18 +6,16 @@ import ProjectAPI from '../../api/ProjectsAPI';
 import ProjectCard from '../../components/projects/ProjectCard';
 import { error } from 'console';
 import { useLocation, useNavigate } from 'react-router';
+import BackButton from '../../components/BackButton';
 import Util from '../../base/Util';
-
 // route links
 export default function Projects(){
   const api=new ProjectAPI();
-  const { state } = useLocation();
-  const nav=useNavigate();
   const util=new Util();
+  const { state } = useLocation();
   let login=false;
-  if(state){
-  login=state.login;
-  }
+  login=util.checkLogCookie();
+
   const [projects,setProject]=useState<Project[]>([]);
   const [loading,setloading]=useState(true);
   const getProjects=async()=>{
@@ -40,7 +38,7 @@ export default function Projects(){
     }
    
   }
-
+//style={{ width: '25rem' }}
   useEffect(() => {
     getProjects();
   },[]);
@@ -48,8 +46,9 @@ export default function Projects(){
     return(
         <div>
       <Row>
-      <Col></Col>
-      <Col xs={6}>
+      <Col>
+      </Col>
+      <Col xs={6} >
       <div className=''>
         <p hidden={true} >Here a list of projects which I have worked on in my spare time. Some will have links to GitHub Repository links other not because of it sensitive nature.</p>
       </div>

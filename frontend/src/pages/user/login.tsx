@@ -3,6 +3,7 @@ import { Alert, Button, Col, Form, Row } from "react-bootstrap";
 import { FormGenText } from "../../components/formGenComponents/FormGenText";
 import { SaveButton } from "../../components/SaveButton";
 import UserAPI from "../../api/UserAPI";
+import Util from "../../base/Util";
 export default function Login(){
     const [form,setForm]=useState({
         username:"",
@@ -12,12 +13,13 @@ export default function Login(){
       username:"",
       password:""
   });
-  const [formErrorMsg,setFormErrorMsg]=useState<any>({
-    hide:true,
-    error:""
-  });
-    const user=new UserAPI();
-      
+    const [formErrorMsg,setFormErrorMsg]=useState<any>({
+      hide:true,
+      error:""
+    });
+  const util =new Util();
+  const user=new UserAPI();
+    
       const onChange=(key:any,value:any)=>{
         setForm({...form,[key]:value});
       }
@@ -26,7 +28,8 @@ export default function Login(){
         try{
           const login=await user.login(form);
           if(login.message==="Successfully Authenticated"){
-            
+            let timeout=util.addMillsToCurrent(login.timeout);
+            document.cookie="id="+login.id+"; expires="+timeout;
             window.location.href="/";
           }else
           {

@@ -23,11 +23,6 @@ export default class ProjectAPI extends Util{
                 throw new Error('error happened');
             }
             var data=await projectRequest.json();
-            for(var i=0; i<data.length; i++){
-                var rec=data[i];
-                var desc=this.cutOffString(rec.description,100," ....");
-                data[i].description=desc;
-            }
             return data;
         }catch(err){
             this.throwError(err);

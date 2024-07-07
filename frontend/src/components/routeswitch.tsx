@@ -6,9 +6,10 @@ import GuardAuthorise from "./GuardAuthorise";
 export default function routeswtich(){
     var nav=new navigation();
     var routes=[];
-    var protectedRoutes=[];
+    var protectedRoutes=nav.protectedRoutes;
     var paramRoutes: any[]=[];
     var formRoute=nav.formRoute;
+    var accessRoute=nav.accessRoutes;
     // home
     const home={element:nav.routes[0].component};
     // layout
@@ -33,6 +34,16 @@ export default function routeswtich(){
                     ))
                 }
                 {
+                    accessRoute.map(route=>(
+                        <Route element={(
+                            <GuardAuthorise component={route.component}>
+                            <route.component/>
+                            </GuardAuthorise>
+                        )}
+                        path={route.path}/>
+                    ))
+                }
+                {
                     // record routes
                     paramRoutes.map(route=>(
                         <Route element={(
@@ -43,7 +54,13 @@ export default function routeswtich(){
                         path={route.path}/>
                     ))
                 }
-                
+                {
+                    // protected routes
+                    protectedRoutes.map(route=>(
+                        <Route element={<route.component/>} path={route.path}/>
+                    ))
+
+                }
                 {
                     // form routes
                     formRoute.map(route=>(

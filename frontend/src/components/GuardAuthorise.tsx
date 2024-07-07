@@ -1,29 +1,21 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import UserAPI from "../api/UserAPI";
+import Util from "../base/Util";
 // guard for user access pages and for login page
 const GuardAuthorise=(props:any)=>{
     const user=new UserAPI();
-    const { id } = useParams();
-    const api=props.api;
-    const config=props.config;
-    const [valid,setValid]=useState(false);
+    const util=new Util();
+    let valid=false;
     const nav=useNavigate();
-    var data;
     const checkAccess=async()=>{
-        
-        try{
-            const check=await user.checkLogin();
-            if(check){
-
-            }
-        }catch(err:any){
-
-        }
+        if(util.checkLogCookie()){
+            nav("/");
+        }else valid=true;
     }
-    
-    return (id) 
-    ? <props.component record={data}/>
-    : <Navigate to={`/${id}`} replace={true}/>;
+    checkAccess();
+    return (valid) 
+    ? <props.component/>
+    : <Navigate to={`/`} replace={true}/>;
 }
 export default GuardAuthorise;

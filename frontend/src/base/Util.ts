@@ -1,45 +1,9 @@
-import axios from 'axios';
 import { Url } from 'url';
 import Base from './Base';
+import { Common } from './Common';
 export class Util extends Base {
- // return user data promoise
-    async getUser(){
-      var data;
-      try{
-        var res=await axios({
-          method: "GET",
-          withCredentials: true,
-          url:this.getApiUrl()+"/user/user"}
-          );
-        data=await res.data;
-      }catch(err){
-        console.error(err);
-      }
-      return data;
-  }
-  // Use javascript standard to make API call
-  async apiCall(http:any,config:any){
-    var data;
-    try{
-      const res=await fetch(http,config);
-      data=await res;
-      return data;
-    }catch(err){
-      console.error(err);
-    }
-    //return data;
-  }
-  // Use React axios library to make API call
-  async axiosCall(json:object){
-    var data;
-    try{
-      const res=await axios(json);
-      data=await res;
-    }catch(err){
-      console.error(err);
-    }
-    return data;
-  }
+  public common=new Common();
+  
     // converts date to show month style
   public  dateConversionMonth(date:any){
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -47,7 +11,7 @@ export class Util extends Base {
         const month = months[dateArr[0]];
         return dateArr[1]+" "+month+" "+dateArr[2]
     }
-    elementGet(elementId:any){
+  public elementGet(elementId:any){
       const get=document.getElementById(elementId);
       if(get!=null){
         const ele=get+".__reactProps$0ywopfjtiphh";
@@ -63,13 +27,26 @@ export class Util extends Base {
       result=result+endtag;
     }
     return result;
-  
+   }
+   public addMillsToCurrent(milliseconds:number){
+    // Get the current date and time
+    let currentDate = new Date();
+    // Add the specified milliseconds
+    currentDate.setMilliseconds(currentDate.getMilliseconds() + milliseconds);
+    return currentDate;
    }
    public setJsonValue(json:any,key:any,value:any){
       var currentJson=json;
       currentJson[key]=value;
       return currentJson;
     }
+   public createRoute(base:string,route:string,param:string=""){
+      var url=this.getApiUrl()+base+route;
+      if(param!==""){
+        url=url+"/"+param
+      }
+      return url;
+   }
    public sendAlert(error:any){
       alert(error);
     }
@@ -82,6 +59,23 @@ export class Util extends Base {
     }
     public unauthorisedAccess(){
       window.location.href='/';
+    }
+    public removeLogCookie(){
+      let currentDate = new Date();
+      let timeout=currentDate.setMilliseconds(currentDate.getMilliseconds() - 10000);
+      document.cookie="id= ; expires="+timeout;
+    }
+    public checkLogCookie(){
+      var login=false;
+      const cookie=document.cookie;
+      const cookieArr=cookie.split(";");
+        if(cookieArr[0].includes("id=")){
+          var id=cookieArr[0].split("=")[1];
+          if(id!=""&&id.length==24){
+            login=true;
+          }
+        }
+      return login
     }
 }
 export default Util;

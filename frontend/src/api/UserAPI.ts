@@ -41,6 +41,22 @@ export default class UserAPI extends Util{
             this.throwError(err);
         }
     }
+    public async userCreden(){
+        try{
+            var data=null;
+            const request=await fetch(this.getApiUrl()+this.base+"user-det",{
+                method:"GET",
+                headers:this.header,
+                credentials: "include"
+            });
+            if(request.ok){
+                data= await request.json();
+            }
+            return data;
+        }catch(err:any){
+            this.throwError(err);
+        }
+    }
     
     public async logout(){
         try{

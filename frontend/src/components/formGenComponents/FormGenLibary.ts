@@ -2,6 +2,7 @@ import Util from '../../base/Util';
 import { FormGenText } from './FormGenText';
 import { FormGenTextArea } from './FormGenTextArea';
 import {FormAPI} from '../../api/FormAPI';
+import PasswordText from '../PasswordText';
 export default class FormGenLibary extends Util{
     private api=new FormAPI();
     
@@ -14,6 +15,11 @@ export default class FormGenLibary extends Util{
         {
             componentName:"textarea",
             component:FormGenTextArea,
+            status:true
+        },
+        {
+            componentName:"password",
+            component:PasswordText,
             status:true
         }
     ].filter((comp)=>comp.status===true);

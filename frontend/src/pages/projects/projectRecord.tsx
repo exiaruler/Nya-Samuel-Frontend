@@ -3,7 +3,6 @@ import { ButtonGroup, Col, Container, Nav, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import ProjectAPI from "../../api/ProjectsAPI";
 import GitHubLogo from "../../assets/github-mark.png";
-import { Link } from 'react-router-dom';
 import BackButton from "../../components/BackButton";
 import ParagraphBody from "../../components/ParagraphBody";
 export default function ProjectRecord(props:any){
@@ -15,16 +14,21 @@ export default function ProjectRecord(props:any){
         description:"",
         url:""
     });
-    
     const [showLinks,setLinks]=useState(false);
     const getProject=async ()=>{
-        try{
-            const project=await api.getProject(id);
-            setProject(project);
+        if(props.record==null){
+            try{
+                const project=await api.getProject(id);
+                setProject(project);
+                setLoad(true);
+                displayLinks(project.url);
+            }catch(err){
+                
+            } 
+        }else{
+            setProject(props.record);
             setLoad(true);
-            displayLinks(project.url);
-        }catch(err){
-            
+            displayLinks(props.record.url);
         }
     }
     const displayLinks=(url:string)=>{

@@ -6,10 +6,11 @@ import { Link,useNavigate } from 'react-router-dom';
 //import props from './../../base/interfaces/project';
 import { ButtonComponent } from '../ButtonComponent';
 import ProjectAPI from '../../api/ProjectsAPI';
-
+import Util from '../../base/Util';
 export default function ProjectCard(props:any){
   const id=props.id;
   var disableStyle='';
+  const util=new Util();
   const login=props.login;
   const navigate = useNavigate();
   const project=new ProjectAPI();
@@ -40,9 +41,9 @@ export default function ProjectCard(props:any){
     <div>
     <Card>
     <Card.Body>
-    <Link to={'/project/'+id} className={disableStyle}>
+    <Link to={'/project/'+id} className={disableStyle} state={{record:props}}>
     <Card.Title as="h4">{props.name}</Card.Title>
-    <CardText>{props.description}</CardText>
+    <CardText>{util.cutOffString(props.description,100," ....")}</CardText>
     </Link>
     <div>
       {url?
@@ -50,7 +51,7 @@ export default function ProjectCard(props:any){
     :null}
     {login?
     <>
-    <Link to={"/form/project/"+id}><ButtonComponent caption={'Update'} variant={''} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
+    <Link to={"/form/project/"+id} state={{record:props}}><ButtonComponent caption={'Update'} variant={''} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
     <Link to={""} state={{login:login}} onClick={()=>deleteProject({id})}><ButtonComponent caption={'Delete'} variant={'danger'} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
     </>
     :null}

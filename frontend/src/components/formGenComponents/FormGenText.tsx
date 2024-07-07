@@ -1,11 +1,13 @@
 import { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import {props} from './FieldProps';
+
 // text field of react bootstrap forms
 export class FormGenText extends Component<props>{
     constructor(props:any) {
         super(props);
         this.state = {
+            
         };
     }
     private dataType=this.props.type;

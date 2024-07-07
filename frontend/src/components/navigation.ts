@@ -37,11 +37,11 @@ export default class navigation extends Util{
             "module":"user",
             "url":"/testbed",
             "name":"Test",
-            "path":"test",
+            "path":"/testbed",
             "enable":true,
             "index":false,
-            "show":true
-        }
+            "show":this.checkEnv()
+        },
     ].filter((route)=>route.enable===true);
     // pages access for login
     public accessRoutes=[
@@ -143,7 +143,7 @@ export default class navigation extends Util{
         "url":"/login",
         "name":"Login",
         "path":"login",
-        "enable":true,
+        "enable":false,
         "index":false,
         "show":false
         },

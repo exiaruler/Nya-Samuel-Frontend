@@ -3,8 +3,9 @@ import { Alert, Button, Col, Form, Row } from "react-bootstrap";
 import { FormGenText } from "../../components/formGenComponents/FormGenText";
 import { SaveButton } from "../../components/SaveButton";
 import UserAPI from "../../api/UserAPI";
-import Util from "../../base/Util";
+import UiBase from "../../base/UiBase";
 export default function Login(){
+    const base=new UiBase();
     const [form,setForm]=useState({
         username:"",
         password:""
@@ -17,18 +18,13 @@ export default function Login(){
       hide:true,
       error:""
     });
-  const util =new Util();
-  const user=new UserAPI();
     
-      const onChange=(key:any,value:any)=>{
-        setForm({...form,[key]:value});
-      }
-      const submit=async(event:any)=>{
+    const submit=async(event:any)=>{
         event.preventDefault();
         try{
-          const login=await user.login(form);
+          const login=await base.userApi.login(form);
           if(login.message==="Successfully Authenticated"){
-            let timeout=util.addMillsToCurrent(login.timeout);
+            let timeout=base.util.addMillsToCurrent(login.timeout);
             document.cookie="id="+login.id+"; expires="+timeout;
             window.location.href="/";
           }else
@@ -64,14 +60,14 @@ export default function Login(){
         <Row>
         <Col>
         </Col>
-        <Col>
+        <Col xs={8} md={3}>
         <Form onSubmit={submit}>
-        <FormGenText label={"Username"} type={"string"} name={"username"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.username} value={""} size={undefined}/>
-        <FormGenText label={"Password"} type={"password"} name={"password"} rows={0} required={false} onChange={(event: any) => onChange(event.target.name, event.target.value)} warning={formWarning.password} value={""} size={undefined}/>
+        <FormGenText label={"Username"} type={"string"} name={"username"} rows={0} required={false} onChange={(event: any) => base.onChange(event.target.name, event.target.value, setForm, form)} warning={formWarning.username} value={""} size={undefined} api={""}/>
+        <FormGenText label={"Password"} type={"password"} name={"password"} rows={0} required={false} onChange={(event: any) => base.onChange(event.target.name, event.target.value, setForm, form)} warning={formWarning.password} value={""} size={undefined} api={""}/>
         <Alert variant='warning' key='warning' hidden={formErrorMsg.hide}>
         {formErrorMsg.error}
         </Alert>
-        <SaveButton caption={"Login"} variant={"primary"} onClick={""} size={"lg"} active={false} disabled={false} type={"submit"} />
+        <SaveButton id={""} caption={"Login"} variant={"primary"} onClick={""} size={"lg"} active={false} disabled={false} type={"submit"} />
         
         </Form>
         </Col>

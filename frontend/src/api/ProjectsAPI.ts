@@ -40,6 +40,18 @@ export default class ProjectAPI extends Util{
             this.throwError(err);
         }
     }
+    public async viewCount(id:any){
+        try{
+            const request=await fetch(this.getApiUrl()+this.base+"update-project-view/"+id,this.apiCallConfig("PUT"));
+            if(!request.ok){
+                throw new Error('error happened');
+            }
+            var data=await request.json();
+            return data;
+        }catch(err){
+            this.throwError(err);
+        }
+    }
     public async deleteProject(id:any){
         try{
             var config:any={

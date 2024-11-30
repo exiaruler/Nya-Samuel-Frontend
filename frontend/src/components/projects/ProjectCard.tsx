@@ -3,14 +3,14 @@ import { CardText } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import gitlogo from './assets/github-mark.png';
 import { Link,useNavigate } from 'react-router-dom';
+import UiBase from '../../base/UiBase';
 //import props from './../../base/interfaces/project';
 import { ButtonComponent } from '../ButtonComponent';
 import ProjectAPI from '../../api/ProjectsAPI';
-import Util from '../../base/Util';
 export default function ProjectCard(props:any){
   const id=props.id;
   var disableStyle='';
-  const util=new Util();
+  const base=new UiBase();
   const login=props.login;
   const navigate = useNavigate();
   const project=new ProjectAPI();
@@ -34,7 +34,7 @@ export default function ProjectCard(props:any){
     }
   }
   useEffect(()=>{
-    showGitLogo(props.url)
+    showGitLogo(props.url);
     disableLink();
   });
   return (
@@ -43,7 +43,7 @@ export default function ProjectCard(props:any){
     <Card.Body>
     <Link to={'/project/'+id} className={disableStyle} state={{record:props}}>
     <Card.Title as="h4">{props.name}</Card.Title>
-    <CardText>{util.cutOffString(props.description,100," ....")}</CardText>
+    <CardText>{base.util.cutOffString(props.description,100," ....")}</CardText>
     </Link>
     <div>
       {url?
@@ -51,8 +51,8 @@ export default function ProjectCard(props:any){
     :null}
     {login?
     <>
-    <Link to={"/form/project/"+id} state={{record:props}}><ButtonComponent caption={'Update'} variant={''} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
-    <Link to={""} state={{login:login}} onClick={()=>deleteProject({id})}><ButtonComponent caption={'Delete'} variant={'danger'} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
+    <Link to={"/form/project/"+id} state={{record:props}}><ButtonComponent id={""} caption={'Update'} variant={''} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
+    <Link to={""} state={{login:login}} onClick={()=>deleteProject({id})}><ButtonComponent id={""} caption={'Delete'} variant={'danger'} onClick={undefined} size={''} active={false} disabled={false} type={undefined} /></Link>
     </>
     :null}
     </div>

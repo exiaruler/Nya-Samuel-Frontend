@@ -18,6 +18,7 @@ const GuardWrapperForm=(props:any)=>{
     const [valid,setValid]=useState(false);
     var data=null;
     const nav=useNavigate();
+            
     const validateFormProm=()=>{
         const inHouseForm=formGen.forms;
         return new Promise<void>(async (resolve,reject)=>{
@@ -60,7 +61,7 @@ const GuardWrapperForm=(props:any)=>{
                 if(id!==""&&id!=="0"&&state==null){
                     apiCall();
                 }else if(state!=null&&state.record){
-                    setValid(true);
+                    //setValid(true);
                     data=state.record;
                 }
             },
@@ -83,10 +84,9 @@ const GuardWrapperForm=(props:any)=>{
         }
     }
     const apiCall=async()=>{
-        
             try {
-                const request=await fetch(form.retrieveApi+id,config);
-                if(request.ok){
+                const request=await util.fetchRequest(form.retrieveApi+id,"GET");
+                if(await request.ok){
                     //const response=await request.json();
                     if(request.ok){
                         setValid(true);
@@ -99,6 +99,9 @@ const GuardWrapperForm=(props:any)=>{
             }
     }
     validateFormProm();
+    if(state!=null&&state.record){
+        data=state.record;
+    }
     return (id) 
     ? <props.component form={form} record={data} />
     : <Navigate to={`/${formId}/${id}`} replace={true} />;

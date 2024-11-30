@@ -1,8 +1,8 @@
 import { Url } from 'url';
 import Base from './Base';
-import { Common } from './Common';
+import { CommonAPI } from '../api/CommonAPI';
 export class Util extends Base {
-  public common=new Common();
+
   
     // converts date to show month style
   public  dateConversionMonth(date:any){
@@ -34,6 +34,11 @@ export class Util extends Base {
     // Add the specified milliseconds
     currentDate.setMilliseconds(currentDate.getMilliseconds() + milliseconds);
     return currentDate;
+   }
+   public checkAuthorise(code:number){
+    var result=false;
+    if(code===401||code===403) result=true;
+    return result;
    }
    public setJsonValue(json:any,key:any,value:any){
       var currentJson=json;
@@ -76,6 +81,55 @@ export class Util extends Base {
           }
         }
       return login
+    }
+    public async fetchRequest(api:string,method:string="GET",body=null){
+      var config=this.apiCallConfig(method,body);
+      var request:any;
+      try{
+        request=await fetch(this.getApiUrl()+api,config);
+      }catch(err){
+        this.throwError(err);
+      }
+      return request;
+    }
+    public async fetchRequestComplete(api:string,method:string="GET",body=null){
+      var config=this.apiCallConfig(method,body);
+      var request:any;
+      var statusCode=200;
+      try{
+        request=await fetch(this.getApiUrl()+api,config);
+        var response={
+          ok:false,
+          status:200,
+          json:{},
+        }
+        response.status=await request.status;
+        statusCode=await request.status;
+        response.ok=await request.ok;
+        response.json=await request.json(); 
+        return response;
+      }catch(err){
+        if(this.checkAuthorise(statusCode)||request==undefined){
+          this.unauthorisedAccess();
+        }
+      }
+      return request;
+    }
+    public async requestHandler(request:any){
+      try{
+        var response={
+          ok:false,
+          status:200,
+          json:{},
+        }
+        response.status=await request.status;
+        response.ok=await request.ok;
+        response.json=await request.json(); 
+        return response;
+      }catch(err){
+        this.throwError(err);
+      }
+
     }
 }
 export default Util;

@@ -6,13 +6,11 @@ export type props={
     required:boolean,
     onChange:any,
     warning:string,
-    value:string,
+    value:any,
     size:any,
-    api:string,
 }
 const defaultValue={
     required:false,
     rows:3,
-    value:"",
-    api:""
+    value:""
 };

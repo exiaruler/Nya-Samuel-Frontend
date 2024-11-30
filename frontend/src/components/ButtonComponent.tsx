@@ -4,11 +4,11 @@ import { Button, ButtonGroup } from "react-bootstrap";
 export class ButtonComponent extends Component<props>{
     render(){
         return(
-        <ButtonGroup >
-        <Button variant={this.props.variant||"primary"} type={this.props.type}>
-        {this.props.caption}
+        <ButtonGroup className="Button-Regular">
+        <Button  variant={this.props.variant||"primary"} onClick={this.props.onClick} type={this.props.type} size={this.props.size}>
+        {this.props.caption} 
         </Button> 
-        </ButtonGroup>   
+        </ButtonGroup>  
         );
     }
 }

@@ -22,6 +22,7 @@ export default function ProjectRecord(props:any){
                 setProject(project);
                 setLoad(true);
                 displayLinks(project.url);
+                api.viewCount(id);
             }catch(err){
                 
             } 
@@ -29,6 +30,7 @@ export default function ProjectRecord(props:any){
             setProject(props.record);
             setLoad(true);
             displayLinks(props.record.url);
+            api.viewCount(id);
         }
     }
     const displayLinks=(url:string)=>{
@@ -44,16 +46,14 @@ export default function ProjectRecord(props:any){
         <div>
         <Row>
         <Col id="BackSection">
-        
         <div className="">
-        <br />
         {load?
         <BackButton url={"/projects"}/>
         :null}
         </div>
         </Col>
-        <Col xs={8}>
-        <div>
+        <Col xs={8} md={8}>
+        <div className="ProjectTitle">
         <h1>{project.name}</h1>
         </div>
         <ParagraphBody value={project.description}/>

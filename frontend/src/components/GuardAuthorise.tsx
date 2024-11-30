@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
-import UserAPI from "../api/UserAPI";
-import Util from "../base/Util";
+import UiBase from "../base/UiBase";
 // guard for user access pages and for login page
 const GuardAuthorise=(props:any)=>{
-    const user=new UserAPI();
-    const util=new Util();
+    const base=new UiBase();
     let valid=false;
     const nav=useNavigate();
     const checkAccess=async()=>{
-        if(util.checkLogCookie()){
+        if(base.util.checkLogCookie()){
             nav("/");
         }else valid=true;
     }

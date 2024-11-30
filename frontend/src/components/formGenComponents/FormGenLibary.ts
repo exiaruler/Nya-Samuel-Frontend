@@ -1,6 +1,7 @@
 import Util from '../../base/Util';
 import { FormGenText } from './FormGenText';
 import { FormGenTextArea } from './FormGenTextArea';
+import { FormGenCheckBox } from './FormGenCheckBox';
 import {FormAPI} from '../../api/FormAPI';
 import PasswordText from '../PasswordText';
 export default class FormGenLibary extends Util{
@@ -21,6 +22,11 @@ export default class FormGenLibary extends Util{
             componentName:"password",
             component:PasswordText,
             status:true
+        },
+        {
+            componentName:"checkbox",
+            component:FormGenCheckBox,
+            status:true
         }
     ].filter((comp)=>comp.status===true);
     // Testing and sample
@@ -28,7 +34,7 @@ export default class FormGenLibary extends Util{
         {
             param:"sample",
             name:"Sample Form",
-            status:true,
+            status:false,
             postApi:"",
             updateApi:"",
             headers:this.getApiKey(),

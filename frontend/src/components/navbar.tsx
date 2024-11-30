@@ -10,11 +10,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/samuel logo.png';
 import Logout from './Logout';
-
 export default function NavBar(props:any){
     const [login,setLogin]=useState(false);
     // dev routes
-    const [dev,setDev]=useState(false);
     var navigation = new Navigation();
     const routes=navigation.routes.filter((route)=>route.show===true);
     const home=routes[0];

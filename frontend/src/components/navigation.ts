@@ -9,10 +9,15 @@ import Form from '../pages/formGen/form';
 import Util from '../base/Util';
 import Login from '../pages/user/login';
 import testBed from '../pages/user/dev/testBed';
+import EntryRecord from '../pages/formGen/entryrecord';
+// guard
+import GuardAuthorise from './GuardAuthorise';
+import GuardWrapper from './GuardWrapper';
+import GuardWrapperForm from './formGenComponents/GuardWrapperForm';
 export default class navigation extends Util{
     // navbar/layout
     layout=Navbar;
-    
+    private settingId="";
     // external url outside website
     public externalLinks=[
         {
@@ -31,21 +36,59 @@ export default class navigation extends Util{
         "height":28
         }
     ].filter((link)=>link.status===true);
+    // new design
+    public userAccessDropdown=[
+        {
+            name:"Tools",
+            enable:true,
+            menus:[
+                {
+                    "component":testBed,
+                    "guard":null,
+                    "module":"user",
+                    "url":"/testbed",
+                    "name":"Test",
+                    "path":"/testbed",
+                    "enable":true,
+                    "index":false,
+                    "show":this.checkEnv()
+                },
+                {
+                    "component":ProjectRecord,
+                    "module":"project",
+                    "url":"/project/:id",
+                    "name":"Projects Record",
+                    "path":"/project/:id",
+                    "enable":true,
+                    "index":false,
+                    "show":false,
+                    "guard":{
+                        "component":GuardWrapper,
+                        "api":this.getApiUrl()+"/project/get-project/",
+                        "config":this.apiCallConfig("GET")
+                    }
+                },
+            ].filter((route)=>route.enable===true)
+        }
+    ];
     // pages access by logged in users
     public protectedRoutes=[
-        {"component":testBed,
+        {
+            "component":testBed,
             "module":"user",
             "url":"/testbed",
             "name":"Test",
             "path":"/testbed",
-            "enable":true,
+            "enable":this.checkEnv(),
             "index":false,
             "show":this.checkEnv()
-        },
+        }
     ].filter((route)=>route.enable===true);
     // pages access for login
     public accessRoutes=[
-        {"component":Login,
+        {
+            "component":Login,
+            "guard":GuardAuthorise,
             "module":"user",
             "url":"/login",
             "name":"Login",
@@ -71,11 +114,26 @@ export default class navigation extends Util{
         "index":false,
         "show":false,
         "guard":{
-            "api":this.getApiUrl()+"/project/get-project/",
+            "api":"/project/get-project/",
             "config":{
                 headers:this.header}
         }
         },
+        {
+            "component":EntryRecord,
+            "module":"formgen",
+            "url":"/entry/:id",
+            "name":"entry",
+            "path":"/entry/:id",
+            "enable":true,
+            "index":false,
+            "show":false,
+            "guard":{
+                "api":"/entry/get-entry/",
+                "config":{
+                    headers:this.header}
+            }
+        }
     ];
     
     public formRoute=[
@@ -109,7 +167,36 @@ export default class navigation extends Util{
                 "api":this.getApiUrl()+"/form/get-form/",
                 "config":{headers:this.header,credentials: 'include'}
             }
+        },
+        {
+            "component":Form,
+            "module":"formgen",
+            "url":"/form/setting/0",
+            "name":"Settings",
+            "path":"/form/setting/0",
+            "enable":true,
+            "index":false,
+            "show":true,
+            "guard":{
+                "api":this.getApiUrl()+"/form/get-form/",
+                "config":{headers:this.header,credentials: 'include'}
             }
+        },
+        {
+            "component":EntryRecord,
+            "module":"formgen",
+            "url":"/entry/project",
+            "name":"Project Entry",
+            "path":"/entry/project",
+            "enable":true,
+            "index":false,
+            "show":true,
+            "guard":{
+                "api":"/entry/get-entry/",
+                "config":{
+                    headers:this.header}
+            }
+        }
     ].filter((route)=>route.enable===true);
     // public routes
     public routes=[
@@ -137,17 +224,9 @@ export default class navigation extends Util{
         "path":"*",
         "enable":true,
         "index":false,
-        "show":false},
-        {"component":Login,
-        "module":"user",
-        "url":"/login",
-        "name":"Login",
-        "path":"login",
-        "enable":false,
-        "index":false,
         "show":false
         },
-    ];
+    ]
     // error page
     error=Error;
     

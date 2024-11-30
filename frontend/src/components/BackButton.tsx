@@ -18,16 +18,22 @@ export default function BackButton(props:any){
         }
     }
     setBack();
-    const goBackto=()=>{
+    let goBackto=()=>{
         nav(url);
     }
+    if(props.onClick){
+        goBackto=props.onClick;
+    }
         return(
-            
-            <ButtonGroup >
+            <div>
+            <br/>
+            <ButtonGroup>
             <Button variant="light" size="lg" onClick={goBackto} >
             <img src={BackLogo} alt="Back" width={width} height={height}/>
             </Button>
             </ButtonGroup>
+            </div>
+            
             
         );
 }

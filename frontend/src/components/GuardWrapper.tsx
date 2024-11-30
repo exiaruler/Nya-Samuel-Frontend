@@ -1,29 +1,30 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import { useLocation } from "react-router-dom";
-
+import Util from "../base/Util";
 const GuardWrapper=(props:any)=>{
     const { id } = useParams();
     const { state } = useLocation();
+    const util=new Util();
     const api=props.api;
-    const config=props.config;
     const [valid,setValid]=useState(false);
     const nav=useNavigate();
     var data=null;
-    
+    var code=200;
     const apiCall=async()=>{
-            
             try {
-                const request=await fetch(api+id,config);
-                const response=await request.json();
-                if(response){
+                const request=await util.fetchRequest(api+id,"GET");
+                code=await request.status
+                let ok=await request.ok;
+                if(ok){
+                    const response=await request.json();
                     setValid(true);
                     data=response;
                 }else{
-                    nav("/*");
+                    nav("/*",{ state: { unauthorised:util.checkAuthorise(code) }});
                 }
             } catch (error) {
-                nav("/*");
+                nav("/*",{ state: {  unauthorised:util.checkAuthorise(code) }});
             }
     }
     // check if record was passed from previous page. if not send request to check to check if it's valid

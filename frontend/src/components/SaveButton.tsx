@@ -6,7 +6,7 @@ export class SaveButton extends ButtonComponent{
     
     render(){
         return(
-        <ButtonGroup >
+        <ButtonGroup className="Button-Regular">
         <Button variant={this.props.variant||"primary"} type={"submit"}>
         {this.props.caption}
         </Button>   

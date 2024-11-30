@@ -12,7 +12,7 @@ export default function home(){
         
           <Row>
           <Col id="Col1"></Col>
-            <Col id="Col2">
+            <Col id="Col2" md={6}>
             <div className='CentreText'>
             <h1>Welcome to my world!</h1>
             <p>This is my portfolio of my current projects that I am working on and completed projects</p>

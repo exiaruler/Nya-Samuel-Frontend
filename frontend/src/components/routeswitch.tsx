@@ -36,9 +36,9 @@ export default function routeswtich(){
                 {
                     accessRoute.map(route=>(
                         <Route element={(
-                            <GuardAuthorise component={route.component}>
+                            <route.guard component={route.component}>
                             <route.component/>
-                            </GuardAuthorise>
+                            </route.guard>
                         )}
                         path={route.path}/>
                     ))

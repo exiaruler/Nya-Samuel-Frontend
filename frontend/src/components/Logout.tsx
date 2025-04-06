@@ -1,27 +1,28 @@
-import { Component } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UiBase from "../base/UiBase";
-export default class Logout extends Component {
-    private base=new UiBase();
- 
-     private logOut= async () => {
-        try{
-            const log=await this.base.userApi.logout();
-            if(log){
-                this.base.util.removeLogCookie();
-                window.location.href = "/";
-            }
-        }catch(err){
-            throw err;
+import { useDispatch } from "react-redux";
+import {clearUser} from "../redux/slice/loginSlice";
+
+
+export default function Logout(){
+  var base=new UiBase();
+  var dispatch=useDispatch();
+  const nav=useNavigate();
+  const logOut= async () => {
+    try{
+        const log=await base.userApi.logout();
+        if(log){
+            base.util.removeLogCookie();
+            dispatch(clearUser());
+            window.location.href = "/";
         }
+    }catch(err){
+        throw err;
     }
-    
-    render() {
-      return(   
-        <div> 
-        <Link to="/" onClick={this.logOut}>Logout</Link>
-        </div>
-      );
-    }
-  }
-  
+  } 
+  return(
+    <div> 
+    <Link to="/" onClick={logOut}>Logout</Link>
+    </div>
+  );
+}

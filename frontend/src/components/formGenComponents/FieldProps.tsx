@@ -1,10 +1,10 @@
 export type props={
-    label:string,
+    label?:string,
     type:string,
     name:string,
     rows:number,
-    required:boolean,
-    onChange:any,
+    required?:boolean,
+    onChange?:any,
     warning:string,
     value:string,
     size:any,

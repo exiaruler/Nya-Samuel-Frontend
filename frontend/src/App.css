@@ -1,9 +1,3 @@
-.App {
-  text-wrap: balance;
-  font-family: Arial, Helvetica, sans-serif;
-  background-size: cover;
-}
-
 p{
   font-size: 18px;
   
@@ -16,44 +10,36 @@ a{
   color: darkblue;
   
 }
-.Button-Regular{
-  padding:2px;
-}
+
 a:hover{
   color: black;
 }
+
 body{
   background-color:#F9E0EC;
 }
-.CentreText{
-  text-align: center;
-}
-.ProjectTitle{
-  padding-left: 14px;
-}
-.disabled-link {
-  pointer-events: none;
-  color: black;
-}
-.TableRowSelect{
-  background-color:#D3D3D3;
-  cursor: pointer;
-  font-weight: bold;
-}
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-.CheckBoxDiv{
-  padding-right: 86%;
-  padding-bottom: 10px;
-}
+
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.App-link {
+  color: #61dafb;
+}
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -63,22 +49,4 @@ body{
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.paragraph-body{
-  margin: 20px;
-  white-space: pre-line;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -7,7 +7,7 @@ export class FormGenTextArea extends FormGenText{
         return(
             <Form.Group>
             <Form.Label>{this.props.label}</Form.Label>
-            <Form.Control id={this.props.name+"Text"} required={this.props.required} name={this.props.name} as="textarea" rows={this.rows} defaultValue={this.props.value}/>
+            <Form.Control spellCheck={true} id={this.props.name+"Text"} required={this.props.required} name={this.props.name} as="textarea" rows={this.rows} defaultValue={this.props.value}/>
             <Form.Text id={this.props.name+"Warning"}></Form.Text>
             </Form.Group>
         );

@@ -1,3 +1,4 @@
+'use client'
 import { useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router";
 import FormGenLibary from "./FormGenLibary";

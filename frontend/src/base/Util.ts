@@ -83,7 +83,7 @@ export class Util extends Base {
       return login
     }
     public async fetchRequest(api:string,method:string="GET",body=null){
-      var config=this.apiCallConfig(method,body);
+      var config=this.apiCallConfig(method.toUpperCase(),body);
       var request:any;
       try{
         request=await fetch(this.getApiUrl()+api,config);
@@ -92,8 +92,8 @@ export class Util extends Base {
       }
       return request;
     }
-    public async fetchRequestComplete(api:string,method:string="GET",body=null){
-      var config=this.apiCallConfig(method,body);
+    public async fetchRequestComplete(api:string,method:string="GET",body=null,redirect:boolean=true,jsonReturn:boolean=true){
+      var config=this.apiCallConfig(method.toUpperCase(),body);
       var request:any;
       var statusCode=200;
       try{
@@ -106,12 +106,14 @@ export class Util extends Base {
         response.status=await request.status;
         statusCode=await request.status;
         response.ok=await request.ok;
-        response.json=await request.json(); 
+        if(jsonReturn){
+          response.json=await request.json(); 
+        }
         return response;
       }catch(err){
-        if(this.checkAuthorise(statusCode)||request==undefined){
+        if(redirect&&(this.checkAuthorise(statusCode)||request==undefined)){
           this.unauthorisedAccess();
-        }
+        }else this.throwError(err);
       }
       return request;
     }

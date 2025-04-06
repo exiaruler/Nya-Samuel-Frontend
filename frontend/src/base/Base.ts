@@ -6,12 +6,16 @@ class Base{
   private apikey=process.env.REACT_APP_API_KEY||"S7fgxFOTKTK8aCjq";
   // js vanilla fetch
    public apiCallConfig(method:string,body=null){
+      let date=new Date();
       var config:any={
         method:method,
         credentials: 'include',
         headers:{
           'Content-Type': 'application/json',
-          "apikey":this.getApiKey()
+          "apikey":this.getApiKey(),
+          "datetime":date,
+          "datestring":date.toDateString(),
+          "timestring":date.toTimeString()
         },
       };
       if(body!=null){
@@ -20,7 +24,10 @@ class Base{
           credentials: 'include',
           headers:{
             'Content-Type': 'application/json',
-            "apikey":this.getApiKey()
+            "apikey":this.getApiKey(),
+            "datetime":date,
+            "date":date.toDateString(),
+            "time":date.toTimeString()
           },
           body:body
         };

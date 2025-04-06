@@ -1,10 +1,20 @@
+'use client'
 import { type } from "os";
-import { Component, useRef } from "react";
+import { ChangeEventHandler, Component, useRef } from "react";
 import { Col, Form, Row } from "react-bootstrap";
-import {props} from './CheckBoxProps';
-export class FormGenCheckBox extends Component<props>{
+type Props={
+    label?:string,
+    type:string,
+    name?:string,
+    required?:boolean,
+    onChange?:ChangeEventHandler
+    warning?:string,
+    value:any,
+    size:any,
+}
+export class FormGenCheckBox extends Component<Props>{
     private componentId=this.props.name+"Check";
-    constructor(props:any) {
+    constructor(props:Props) {
         super(props);
         this.state = {
             

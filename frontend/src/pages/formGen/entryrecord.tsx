@@ -1,15 +1,15 @@
 import { Col, Row, Tab, Table, Tabs } from "react-bootstrap";
-import TableComponent from "../../components/TableComponent";
 import { useParams } from "react-router";
 import Form from "../formGen/form";
 import { useEffect, useRef, useState } from "react";
 import UiBase from "../../base/UiBase";
-import TableColumn from "../../components/TableColumn";
-import TableBody from "../../components/TableBody";
-import { FormAPI } from "../../api/FormAPI";
-import { ButtonComponent } from "../../components/ButtonComponent";
+import { ButtonComponent } from "../../components/Buttons/ButtonComponent";
 import React from "react";
-import BackButton from "../../components/BackButton";
+import TableComponent from "../../components/Table/TableComponent";
+import TableComponentColumn from "../../components/Table/TableComponentColumn";
+import TabGroup from "../../components/Tab/TabGroup";
+import TabComponent from "../../components/Tab/TabComponent";
+import Group from "../../components/Group";
 // page showing records and form
 export default function EntryRecord(props:any){
     const {id}=useParams();
@@ -60,8 +60,8 @@ export default function EntryRecord(props:any){
     const deleteHandle=async()=>{
       var id="";
       id=recordIdRef;
-      if(id!=""){
-        const request=await util.util.fetchRequestComplete(setup.deleteApi+id,"DELETE");
+      if(id!==""){
+        const request=await util.util.fetchRequestComplete(setup.deleteApi+id,"DELETE",null,true,false);
         if(request){
           if(request.ok){
             submitHandle();
@@ -116,11 +116,14 @@ export default function EntryRecord(props:any){
     },[]);
     return(
         <div>
+        <Group>
         <Row>
         <Col md={2}>
      
         </Col>
         <Col md={9}>
+        <TabGroup defaultActiveKey={"records"}>
+        </TabGroup>
         <Tabs 
         id="TabBar"
         activeKey={activeTab}
@@ -128,10 +131,14 @@ export default function EntryRecord(props:any){
         defaultActiveKey="records"
         className="mb-4">
         <Tab eventKey="records" title={setup.name}>
-        <Table bordered hover id="table">
-        <TableColumn columns={setup.tableColumns}/>
-        <TableBody ref={tableBodyRef} idKey={setup.valueKey} keys={setup.tableColumns} records={records} onClick={selectRecord} onDoubleClick={()=>handleTabSwitch("record")}/>
-        </Table>
+       
+        <TableComponent id="table" ref={tableBodyRef} results={records} idKey={setup.valueKey} rowSelect={true} onClick={selectRecord} onDoubleClick={()=>handleTabSwitch("record")}>
+        {
+          setup.tableColumns.map((col:any,index)=>(
+            <TableComponentColumn key={col.key} columnName={col.name}/>
+          ))
+        }
+        </TableComponent>
         <ButtonComponent id={""} caption={'Add'} variant={''} onClick={addRecord} size={''} active={false} disabled={false} type={undefined} />
         {!showDeleteBtn?
         <ButtonComponent id={""} caption={'Delete'} variant={'danger'} onClick={deleteHandle} size={''} active={false} disabled={false} type={undefined} />
@@ -140,7 +147,7 @@ export default function EntryRecord(props:any){
         {!showFormTab?
         <Tab eventKey="record" title={setup.name+" Record"}>
         {
-        <Form ref={formCompRef} form={setup.form} entry={true} valueKey={setup.valueKey} id={recordIdRef} record={recordRef} onClick={()=>handleTabSwitch("records")} submitHandle={submitHandle} clearHandle={clearHandle}/>
+        <Form ref={formCompRef} form={setup.form} entry={true} valueKey={setup.valueKey} id={recordIdRef} record={recordRef} onClick={() => handleTabSwitch("records")} submitHandle={submitHandle} clearHandle={clearHandle} formId={""}/>
         }
         </Tab>
         :null}
@@ -149,6 +156,7 @@ export default function EntryRecord(props:any){
         <Col md={4}>
         </Col>
         </Row>
+        </Group>
         </div>
     );
 }

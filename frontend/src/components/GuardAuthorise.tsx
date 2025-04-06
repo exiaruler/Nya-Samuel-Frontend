@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
+'use client'
+import { Navigate, useNavigate} from "react-router";
 import UiBase from "../base/UiBase";
 // guard for user access pages and for login page
 const GuardAuthorise=(props:any)=>{

@@ -1,15 +1,15 @@
+'use client'
 import { useParams } from "react-router";
-import FormGenLibary from "../../components/formGenComponents/FormGenLibary";
+import FormGenLibary from "../FormGenLibary";
 import { Alert, Button, Col, Form, ProgressBar, Row, Spinner } from "react-bootstrap";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { useNavigate,useLocation } from "react-router-dom";
-import { Component } from "../../base/interfaces/component";
-import BackButton from '../../components/Buttons/BackButton';
-import { SaveButton } from "../../components/Buttons/SaveButton";
-import { ButtonComponent } from "../../components/Buttons/ButtonComponent";
-import { FormAPI } from "../../api/FormAPI";
-import UiBase from "../../base/UiBase";
-import Group from "../../components/Group";
+import { Component } from "../../../base/interfaces/component";
+import BackButton from "../../Buttons/BackButton";
+import { SaveButton } from "../../Buttons/SaveButton";
+import { ButtonComponent } from "../../Buttons/ButtonComponent";
+import { FormAPI } from "../../../api/FormAPI";
+import UiBase from "../../../base/UiBase";
 interface Props{
   form?:any;
   record?:any;
@@ -22,8 +22,8 @@ interface Props{
   valueKey:string;
   onClick?:CallableFunction;
 }
-const form=forwardRef (function FormPage(props:Props,ref){
-  const { state } = useLocation();
+// cross compatible component
+const form=forwardRef (function FormComponent(props:Props,ref){
   let formJson;
   let location = useLocation();
   const [formLay,setFormLay]=useState({
@@ -47,8 +47,8 @@ const form=forwardRef (function FormPage(props:Props,ref){
   let errorClearRef:any=useRef([]);
   const api=new FormAPI();
   const [formError,setFormError]=useState<any>({});
-  const {formId}=useParams();
-  let {id}=useParams();
+  const formId=props.formId;
+  let id=props.id;
   let record:any=useRef({});
   let formUpdate=useRef(false);
   const [formArr,setFormArr]=useState<Component[]>([]);
@@ -450,7 +450,6 @@ const form=forwardRef (function FormPage(props:Props,ref){
   },[]);
   return(
     <div>
-    <Group>
     <Row>
     <Col >
     {!load?
@@ -464,7 +463,6 @@ const form=forwardRef (function FormPage(props:Props,ref){
     <h1>{formLay.formName}</h1>
     :null}
     </div>
-    <Group>
     <Form id={"FormField"} onSubmit={submitForm} >
     {load ?
       <div className='CentreText'>
@@ -494,13 +492,12 @@ const form=forwardRef (function FormPage(props:Props,ref){
     :null}
     <Button id="SubmitBtn" variant="primary" size="lg" hidden={true} type="submit">Save</Button>
     </Form>
-    </Group>
     </div>
     </Col>
     <Col>
     </Col>
     </Row>
-    </Group>
+
     </div>);
 });
 export default form;

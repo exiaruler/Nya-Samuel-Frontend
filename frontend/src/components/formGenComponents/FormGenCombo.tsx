@@ -1,8 +1,21 @@
-import { Component } from "react";
+'use client'
+import { ChangeEventHandler, Component } from "react";
 import { Form, Row } from "react-bootstrap";
 import { props } from "./FieldProps";
-
-export class DigitalPinDropdown extends Component<props>{
+type Props={
+    label?:string,
+    name?:string,
+    required?:boolean,
+    onChange?:ChangeEventHandler
+    warning?:string,
+    value:any,
+    size:any,
+    valueKey:string,
+    valueDisplayKey:string,
+    data?:Array<Object>,
+    api?:string,
+}
+export class FormGenCombo extends Component<props>{
     constructor(props:any) {
         super(props);
         this.state = {

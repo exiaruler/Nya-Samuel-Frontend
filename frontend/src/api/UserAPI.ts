@@ -8,12 +8,14 @@ export default class UserAPI extends Util{
     };
     public async login(json:any){
         try{
+            //const request=await this.fetchRequest(this.base+"login","POST",json);
             const request=await fetch(this.getApiUrl()+this.base+"login",
             {   method:"POST",
                 body:JSON.stringify(json),
                 headers:this.header,
                 credentials: 'include'
             });
+            
             if(!request.ok){
                 throw new Error('error happened');
             }
@@ -25,37 +27,21 @@ export default class UserAPI extends Util{
     }
 
     public async checkLogin(){
-        try{
-            var login=false;
-            const request=await fetch(this.getApiUrl()+this.base+"auth",{
-                method:"GET",
-                headers:this.header,
-                credentials: "include"
-            });
-            const response=request.status;
-            if(response===200){
-                login=true;
-            }
-            return login;
-        }catch(err:any){
-            this.throwError(err);
+        var login=false;
+        const request=await this.fetchRequest(this.base+"auth","GET");
+        const response=request.status;
+        if(response===200){
+            login=true;
         }
+        return login;
     }
-    public async userCreden(){
-        try{
-            var data=null;
-            const request=await fetch(this.getApiUrl()+this.base+"user-det",{
-                method:"GET",
-                headers:this.header,
-                credentials: "include"
-            });
-            if(request.ok){
-                data= await request.json();
-            }
-            return data;
-        }catch(err:any){
-            this.throwError(err);
+    public async userDetails(){
+        var data=null;
+        const request =await this.fetchRequest(this.base+"user-details","GET");
+        if(request.ok){
+            data= await request.json();
         }
+        return data;
     }
     
     public async logout(){

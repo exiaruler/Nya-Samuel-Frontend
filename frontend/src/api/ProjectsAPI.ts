@@ -8,17 +8,8 @@ export default class ProjectAPI extends Util{
     private base="/project/"
     // get a list of all projects
     public async getAllProjects(){
-        const request=this.getApiUrl()+this.base+"get-all-project";
         try{
-            var config={
-                method:"GET",
-                credentials: 'include',
-                headers:{
-                    'Content-Type': 'application/json',
-                    apikey:this.getApiKey()
-                }
-            };
-            const projectRequest=await fetch(request,this.apiCallConfig("GET"));
+            const projectRequest=await this.fetchRequest(this.base+"get-all-project","GET");
             if(!projectRequest.ok){
                 throw new Error('error happened');
             }
@@ -30,7 +21,7 @@ export default class ProjectAPI extends Util{
     }
     public async getProject(id:any){
         try{
-            const request=await fetch(this.getApiUrl()+this.base+"get-project/"+id,this.apiCallConfig("GET"));
+            const request=await this.fetchRequest(this.base+"get-project/"+id,"get");
             if(!request.ok){
                 throw new Error('error happened');
             }
@@ -42,7 +33,19 @@ export default class ProjectAPI extends Util{
     }
     public async viewCount(id:any){
         try{
-            const request=await fetch(this.getApiUrl()+this.base+"update-project-view/"+id,this.apiCallConfig("PUT"));
+            const request=await this.fetchRequest(this.base+"update-project-view/"+id,"PUT");
+            if(!request.ok){
+                throw new Error('error happened');
+            }
+            var data=await request.json();
+            return data;
+        }catch(err){
+            this.throwError(err);
+        }
+    }
+    public async repositoryCount(id:any){
+        try{
+            const request=await this.fetchRequest(this.base+"update-repository-click/"+id,"PUT");
             if(!request.ok){
                 throw new Error('error happened');
             }
@@ -54,15 +57,7 @@ export default class ProjectAPI extends Util{
     }
     public async deleteProject(id:any){
         try{
-            var config:any={
-                method:'DELETE',
-                credentials: 'include',
-                headers:{
-                    'Content-Type': 'application/json',
-                    apikey:this.getApiKey()
-                }
-            };
-            const request=await fetch(this.getApiUrl()+this.base+"delete-project/"+id,config);
+            const request=await this.fetchRequest(this.base+"delete-project/"+id,"delete");
             return await request;
         }catch(err){
             this.throwError(err);

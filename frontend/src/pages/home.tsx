@@ -9,7 +9,6 @@ export default function home(){
   
     return (
         <div className="App">
-        
           <Row>
           <Col id="Col1"></Col>
             <Col id="Col2" md={6}>
@@ -21,8 +20,6 @@ export default function home(){
             </Col>
             <Col id="Col3"></Col>
           </Row>
-       
-   
         </div>
       );
 }

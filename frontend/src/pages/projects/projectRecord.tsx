@@ -3,8 +3,9 @@ import { ButtonGroup, Col, Container, Nav, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import ProjectAPI from "../../api/ProjectsAPI";
 import GitHubLogo from "../../assets/github-mark.png";
-import BackButton from "../../components/BackButton";
+import BackButton from "../../components/Buttons/BackButton";
 import ParagraphBody from "../../components/ParagraphBody";
+import Group from "../../components/Group";
 export default function ProjectRecord(props:any){
     const {id}=useParams();
     const api=new ProjectAPI();
@@ -38,12 +39,16 @@ export default function ProjectRecord(props:any){
             setLinks(true);
         }
     }
+    const repositoryHandle=async()=>{
+        const request=await api.repositoryCount(id);
+    }
     useEffect(() => {
         getProject();
     },[]);
     
     return(
         <div>
+        <Group>
         <Row>
         <Col id="BackSection">
         <div className="">
@@ -62,12 +67,12 @@ export default function ProjectRecord(props:any){
         {showLinks?
         <div id="LinksDiv" className="CentreText">
         <h2>GitHub</h2>
-        <a href={project.url}><img src={GitHubLogo} width={30} height={30} alt="GitRepo"/></a>
+        <a href={project.url} onClick={repositoryHandle}><img src={GitHubLogo} width={30} height={30} alt="GitRepo"/></a>
         </div>
         :null}
         </Col>
         </Row>
-      
+        </Group>
 
         </div>
     );

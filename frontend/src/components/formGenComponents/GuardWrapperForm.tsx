@@ -19,7 +19,7 @@ const GuardWrapperForm=(props:any)=>{
     const [valid,setValid]=useState(false);
     var data=null;
     const nav=useNavigate();
-            
+
     const validateFormProm=()=>{
         const inHouseForm=formGen.forms;
         return new Promise<void>(async (resolve,reject)=>{
@@ -37,7 +37,7 @@ const GuardWrapperForm=(props:any)=>{
                 // send api call for form
                 if(!resolution){
                     try {
-                        const request=await fetch(api+formId,config);
+                        const request=await util.fetchRequest(api+formId);
                         if(request.ok){
                             const response=await request.json();
                             if(response){
@@ -67,7 +67,7 @@ const GuardWrapperForm=(props:any)=>{
                 }
             },
             function(){
-                nav("/*",{ state: { unauthorised:true } });
+                nav("/error",{ state: { unauthorised:true } });
             }
         );
         
@@ -81,7 +81,7 @@ const GuardWrapperForm=(props:any)=>{
                 return data 
             }
         }catch(error){
-            nav("/*");
+            nav("/error");
         }
     }
     const apiCall=async()=>{
@@ -92,11 +92,11 @@ const GuardWrapperForm=(props:any)=>{
                     if(request.ok){
                         setValid(true);
                     }else{
-                        nav("/*");
+                        nav("/error");
                     }
-                }else nav("/*");
+                }else nav("/error");
             } catch (error) {
-                nav("/*");
+                nav("/error");
             }
     }
     validateFormProm();

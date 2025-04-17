@@ -1,9 +1,14 @@
+import CryptoJS from 'crypto-js';
 // api domain and key
 class Base{
 
+  public originUrl=window.location.origin;
+  
   private apiURlBase=process.env.REACT_APP_API_URL||"http://localhost:8000/api";
   // dev key
   private apikey=process.env.REACT_APP_API_KEY||"S7fgxFOTKTK8aCjq";
+  // encryption key
+  private encryptKey:string=process.env.REACT_APP_API_ENCRYPTKEY||"";
   // js vanilla fetch
    public apiCallConfig(method:string,body=null){
       let date=new Date();
@@ -64,5 +69,22 @@ class Base{
       }
       return url;
     }
+  
+    public encryptValue(value:string){
+      var encryption=value;
+      if(this.encryptKey!=undefined&&this.encryptKey!=""){
+        encryption=CryptoJS.AES.encrypt(value,this.encryptKey).toString();
+      }
+      return encryption;
+    }
+    public decryptValueToString(value:string){
+      var convert=value;
+      if(this.encryptKey!=undefined&&this.encryptKey!=""){
+        const bytes=CryptoJS.AES.decrypt(value,this.encryptKey);
+        convert = bytes.toString(CryptoJS.enc.Utf8);
+      }
+      return convert;
+    }
+      
 }
 export default Base;

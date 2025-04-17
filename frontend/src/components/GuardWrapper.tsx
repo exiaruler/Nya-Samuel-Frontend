@@ -28,10 +28,10 @@ const GuardWrapper=(props:any)=>{
                     setValid(true);
                     data=response;
                 }else{
-                    nav("/*",{ state: { unauthorised:util.checkAuthorise(code) }});
+                    nav("/error",{ state: { unauthorised:util.checkAuthorise(code) }});
                 }
             } catch (error) {
-                nav("/*",{ state: {  unauthorised:util.checkAuthorise(code) }});
+                nav("/error",{ state: {  unauthorised:util.checkAuthorise(code) }});
             }
     }
     /*

@@ -19,6 +19,7 @@ export const loginSlice=createSlice({
             state.login=true;
             state.role=action.payload.role;
             state.timeout=action.payload.timeout;
+            
         },
         clearUser:(state)=>{
             state.id="";

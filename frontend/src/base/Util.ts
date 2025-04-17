@@ -1,6 +1,7 @@
 import { Url } from 'url';
 import Base from './Base';
 import { CommonAPI } from '../api/CommonAPI';
+import { page } from './interfaces/page';
 export class Util extends Base {
 
   
@@ -73,15 +74,35 @@ export class Util extends Base {
     public checkLogCookie(){
       var login=false;
       const cookie=document.cookie;
-      const cookieArr=cookie.split(";");
+      const cookiesArr=cookie.split(" ");
+      for(var i=0; i<cookiesArr.length; i++){
+        var cook=cookiesArr[i];
+        const cookieArr=cook.split(";");
         if(cookieArr[0].includes("id=")){
           var id=cookieArr[0].split("=")[1];
           if(id!=""&&id.length==24){
             login=true;
+            break;
           }
         }
+      }
       return login
     }
+
+    public pageSession(pages:Array<page>){
+        let toString=this.encryptValue(JSON.stringify(pages));
+        sessionStorage.setItem(this.originUrl,toString);
+    }
+    public getPagesSession(){
+        let data:Array<page>=[];
+        let storage=sessionStorage.getItem(this.originUrl);
+        if(storage!=""&&typeof storage=='string'){
+          let json=JSON.parse(this.decryptValueToString(storage));
+          data=json;
+        }
+        return data;
+    }
+
     public async fetchRequest(api:string,method:string="GET",body=null){
       var config=this.apiCallConfig(method.toUpperCase(),body);
       var request:any;

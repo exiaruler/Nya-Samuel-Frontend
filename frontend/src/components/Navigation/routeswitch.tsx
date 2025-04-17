@@ -3,74 +3,49 @@ import navigation from "./navigation";
 import GuardWrapper from "../GuardWrapper";
 import GuardWrapperForm from "../formGenComponents/GuardWrapperForm";
 import GuardAuthorise from "../GuardAuthorise";
-export default function routeswtich(){
+import { page } from "../../base/interfaces/page";
+import UiBase from "../../base/UiBase";
+import React from "react";
+type Props={
+    pages?:Array<Object>;
+}
+export default function routesswitch(props:Props){
     var nav=new navigation();
-    var routes=[];
-    var protectedRoutes=nav.protectedRoutes;
-    var paramRoutes: any[]=[];
-    var formRoute=nav.formRoute;
-    var accessRoute=nav.accessRoutes;
+    const base=new UiBase();
+    const pages=base.pages;
     // home
     const home={element:nav.routes[0].component};
-    // layout
-    routes.push({element:nav.layout,path:"/"});
-    for(var i in nav.routes){
-        var rou=nav.routes[i];
-        var route={element:rou.component,path:rou.path,index:rou.index};
-        if(rou.enable){
-            routes.push(route);
+    
+    const routePage=(pa:page)=>{
+        let path:string=pa.path;
+        let guard:any=nav.findGuard(pa.guard);
+        let page:any=nav.findPage(pa.path);
+        let route=<Route element={React.createElement(page)} index={pa.index} path={path}/>;
+        if(page!=null){
+            if(guard!=null){
+                route= <Route element={
+                React.createElement(guard,{api:pa.api,auth:pa.protected,component:page},React.createElement(page))            
+                } 
+                path={path}
+                index={pa.index}
+                />
+            }
+            return route;
         }
     }
-    paramRoutes=nav.routesParam.filter((route)=>route.enable===true);
     return(
         <div>
             <Routes>
-                <Route index element={<home.element/>}/>
                 {
-                    // regular page routes
-                    routes.map(route=>(
-                        <Route element={<route.element/>} path={route.path} />
-                     
+                
+                    pages.map((pa:page,key)=>(
+                        routePage(pa)
                     ))
+                        
+                    
                 }
                 {
-                    accessRoute.map(route=>(
-                        <Route element={(
-                            <route.guard component={route.component}>
-                            <route.component/>
-                            </route.guard>
-                        )}
-                        path={route.path}/>
-                    ))
-                }
-                {
-                    // record routes
-                    paramRoutes.map(route=>(
-                        <Route element={(
-                            <GuardWrapper api={route.guard.api} config={route.guard.config} component={route.component} auth={route.guard.auth}>
-                            <route.component/>
-                            </GuardWrapper>
-                        )}
-                        path={route.path}/>
-                    ))
-                }
-                {
-                    // protected routes
-                    protectedRoutes.map(route=>(
-                        <Route element={<route.component/>} path={route.path}/>
-                    ))
-
-                }
-                {
-                    // form routes
-                    formRoute.map(route=>(
-                        <Route element={(
-                            <GuardWrapperForm api={route.guard.api} config={route.guard.config} component={route.component}>
-                            <route.component id="" formId="" valueKey=""/>
-                            </GuardWrapperForm>
-                        )}
-                        path={route.path}/>
-                    ))
+                    //<Route index={true} element={<home.element/>}/>
                 }
             </Routes>
         </div>

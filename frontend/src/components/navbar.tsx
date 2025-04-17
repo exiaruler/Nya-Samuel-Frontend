@@ -10,24 +10,26 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import logo from '../assets/samuel logo.png';
 import Logout from './Logout';
+import UiBase from '../base/UiBase';
 import { getLoginState } from '../redux/slice/loginSlice';
 import { useSelector,useDispatch} from 'react-redux';
+import { getPageSection } from '../redux/slice/pageSlice';
 export default function NavBar(props:any){
+    const base=new UiBase();
     const [login,setLogin]=useState(false);
     // dev routes
     var navigation = new Navigation();
     const routes=navigation.routes.filter((route)=>route.show===true);
+    //const home=base.getPageUrl('url')
     const home=routes[0];
     var loginState=useSelector(getLoginState);
-
+    const pages=base.getPagesSection('navbar');
+    const userTools=base.getPagesSection('tools');
     let loginProp=false;
     if(props.login){
-      loginProp=props.login;
+      //loginProp=props.login;
     }
     loginProp=loginState;
-    // user links
-    const formsUser=navigation.formLinks.filter((link)=>link.show===true);
-    const protectedRoutes=navigation.protectedRoutes.filter((link)=>link.show===true);
     const checkLogin=()=>{
       if(loginProp===true){
         setLogin(true);
@@ -46,23 +48,18 @@ export default function NavBar(props:any){
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             {
-                routes.map(route=>(
-                    <Nav.Link><Link to={route.url} state={{login:login}}>{route.name}</Link></Nav.Link>
+                pages.map((page:any)=>(
+                    <Nav.Link><Link to={page.url} state={{login:login}}>{page.name}</Link></Nav.Link>
                 ))
             }
           {login?
           <NavDropdown title="Tools" id="basic-nav-dropdown" >
           {
-            // forms
-            formsUser.map(link=>(
-              <Nav.Link><Link to={link.url}>{link.name}</Link></Nav.Link> 
+            
+            userTools.map((page:any)=>(
+              <Nav.Link><Link to={base.createUrl(page)}>{page.name}</Link></Nav.Link> 
             ))
-          }
-          {
-            // protected routes
-            protectedRoutes.map(link=>(
-              <Nav.Link><Link to={link.url}>{link.name}</Link></Nav.Link> 
-            ))
+            
           }
           <Nav.Link><Logout/></Nav.Link>
           </NavDropdown>

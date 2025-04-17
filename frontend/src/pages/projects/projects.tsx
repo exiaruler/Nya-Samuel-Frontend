@@ -59,7 +59,7 @@ export default function Projects(){
       </div>
       :null}
       {
-        projects.map(project=>(
+        projects.map((project,key)=>(
         <ListGroup.Item>
         <ProjectCard repositoryClicks={project.repositoryClicks} views={project.views} name={project.name} description={project.description} url={project.url} key={project._id} id={project._id} project={project} login={login}/>
         </ListGroup.Item>

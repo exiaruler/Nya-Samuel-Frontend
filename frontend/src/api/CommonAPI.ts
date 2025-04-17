@@ -13,4 +13,17 @@ export class CommonAPI extends Util{
             this.throwError(err);
         }
     }
+    public async getPages(app:string){
+        let data=[];
+        const request=await this.fetchRequest("/page/get-app-pages/"+app);
+        if(!request.ok){
+            throw new Error('error happened');
+        }
+        data=await request.json();
+        return data;
+    }
+    public getPageAsync(app:string){
+        const request=this.fetchRequest("/page/get-app-pages/"+app);
+        return request;
+    }
 }

@@ -10,11 +10,12 @@ import Util from '../../base/Util';
 import Login from '../../pages/user/login';
 import testBed from '../../pages/user/dev/testBed';
 import EntryRecord from '../../pages/formGen/entryrecord';
+import { ProjectStaistics } from '../../pages/projects/projectStatistics';
 // guard
 import GuardAuthorise from '.././GuardAuthorise';
 import GuardWrapper from '.././GuardWrapper';
 import GuardWrapperForm from '.././formGenComponents/GuardWrapperForm';
-import { ProjectStaistics } from '../../pages/projects/projectStatistics';
+import TestBed from '../../pages/user/dev/testBed';
 export default class navigation extends Util{
     // navbar/layout
     layout=Navbar;
@@ -37,6 +38,76 @@ export default class navigation extends Util{
         "height":28
         }
     ].filter((link)=>link.status===true);
+    // pages file library
+    public pages=[
+        {
+            path:"*",
+            page:Error
+        },
+        {
+            path:"/",
+            page:Home
+        },
+        {
+            path:"/projects",
+            page:Projects
+        },
+        {
+            path:"/project/:id",
+            page:ProjectRecord
+        },
+        {
+            path:"/project/view-statistics/:id",
+            page:ProjectStaistics
+        },
+        {
+            path:"/form/:formId/:id",
+            page:Form
+        },
+        {
+            path:"/login",
+            page:Login
+        },
+        {
+            path:"/testbed",
+            page:TestBed
+        },
+        {
+            path:"/entry/:id",
+            page:EntryRecord
+        }
+    ];
+    public guards=[
+        {
+            // standard
+            guard:"guardwrapper",
+            component:GuardWrapper
+        },
+        {
+            // login
+            guard:"guardauthorise",
+            component:GuardAuthorise
+        },
+        {
+            // used for form routes
+            guard:"guardwrapperform",
+            component:GuardWrapperForm
+        },
+    ]
+    public findPage(path:string){
+        let page=null;
+        if(this.pages.find((pa)=>pa.path===path)!==undefined){
+            page=this.pages.find((pa)=>pa.path===path)?.page;
+        }
+        return page;
+    }
+    public findGuard(guard:string){
+        let comp=null;
+        if(this.guards.find((gu)=>gu.guard===guard)!==undefined){
+            comp=this.guards.find((gu)=>gu.guard===guard)?.component;
+        }
+        return comp;
+    }
     // new design
     public userAccessDropdown=[
         {
@@ -232,7 +303,7 @@ export default class navigation extends Util{
         "module":"project",
         "url":"/projects",
         "name":"Projects",
-        "path":"projects",
+        "path":"/projects",
         "enable":true,
         "index":false,
         "show":true},

@@ -8,6 +8,7 @@ type Props={
     defaultActiveKey:any;
     children?:React.ReactElement<TabProps,any>[];
     others?:any;
+    onSelect?:any;
 }
  const TabGroup=forwardRef(function TabGroup(props:Props,ref){
     const [activeTab, setActiveTab] = useState(props.defaultActiveKey);
@@ -15,7 +16,12 @@ type Props={
     const handleTabSwitch = (tabKey:any) => {
         setActiveTab(tabKey);
       };
-    
+    const onSelectTab=(tabKey:any)=>{
+        setActiveTab(tabKey);
+        if(props.onSelect){
+            props.onSelect(tabKey);
+        }
+    }
     useImperativeHandle(ref,()=>{
         return {
             handleTabSwitch
@@ -27,7 +33,7 @@ type Props={
         <Tabs
         className="mb-4"
         activeKey={activeTab}
-        onSelect={(tabKey:any) => setActiveTab(tabKey)}
+        onSelect={(tabKey:any)=>onSelectTab(tabKey)}
         defaultActiveKey={props.defaultActiveKey}
         >
         {

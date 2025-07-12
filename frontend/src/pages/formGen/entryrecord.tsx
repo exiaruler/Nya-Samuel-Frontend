@@ -5,13 +5,16 @@ import { useEffect, useRef, useState } from "react";
 import UiBase from "../../base/UiBase";
 import { ButtonComponent } from "../../components/Buttons/ButtonComponent";
 import React from "react";
-import TableComponent from "../../components/Table/TableComponent";
 import TableComponentColumn from "../../components/Table/TableComponentColumn";
 import TabGroup from "../../components/Tab/TabGroup";
 import TabComponent from "../../components/Tab/TabComponent";
 import Group from "../../components/Group";
+import TableComponentClass from "../../components/Table/TableComponentClass";
+type Props={
+  entryRecord?:any
+}
 // page showing records and form
-export default function EntryRecord(props:any){
+export default function EntryRecord(props:Props){
     const {id}=useParams();
     const formCompRef:any=useRef(null);
     const tableBodyRef:any=useRef(null);
@@ -35,26 +38,46 @@ export default function EntryRecord(props:any){
     
     // get table form
     const getTableForm=async()=>{
-      let url="/entry/get-entry/"+id;
-      const request=await util.util.fetchRequest(url,"GET");
-      const data=await request.json();
-      const status=await request.status;
-      if(status===200){
+      if(props.entryRecord){
+        const data=props.entryRecord;
         setShowFormTab(false);
-        formRef.current=data.form;
-        if(data.deleteApi===""){
-          setShowDeleteBtn(true);
+          formRef.current=data.form;
+          if(data.deleteApi===""){
+            setShowDeleteBtn(true);
+          }
+          setSetup({
+            name:data.name,
+            form:data.form,
+            getRecordsApi:data.table.getApi,
+            deleteApi:data.deleteApi,
+            valueKey:data.table.valueKey,
+            tableColumns:data.table.tableColumns,
+            apiKey:""
+          });
+          getTableData(data.table.getApi);
+      }else
+      {
+        let url="/entry/get-entry/"+id;
+        const request=await util.util.fetchRequest(url,"GET");
+        const data=await request.json();
+        const status=await request.status;
+        if(status===200){
+          setShowFormTab(false);
+          formRef.current=data.form;
+          if(data.deleteApi===""){
+            setShowDeleteBtn(true);
+          }
+          setSetup({
+            name:data.name,
+            form:data.form,
+            getRecordsApi:data.table.getApi,
+            deleteApi:data.deleteApi,
+            valueKey:data.table.valueKey,
+            tableColumns:data.table.tableColumns,
+            apiKey:""
+          });
+          getTableData(data.table.getApi);
         }
-        setSetup({
-          name:data.name,
-          form:data.form,
-          getRecordsApi:data.table.getApi,
-          deleteApi:data.deleteApi,
-          valueKey:data.table.valueKey,
-          tableColumns:data.table.tableColumns,
-          apiKey:""
-        });
-        getTableData(data.table.getApi);
       }
     }
     const deleteHandle=async()=>{
@@ -132,13 +155,13 @@ export default function EntryRecord(props:any){
         className="mb-4">
         <Tab eventKey="records" title={setup.name}>
        
-        <TableComponent id="table" ref={tableBodyRef} results={records} idKey={setup.valueKey} rowSelect={true} onClick={selectRecord} onDoubleClick={()=>handleTabSwitch("record")}>
+        <TableComponentClass id="table" ref={tableBodyRef} results={records} idKey={setup.valueKey} rowSelect={true} onClick={selectRecord} onDoubleClick={()=>handleTabSwitch("record")}>
         {
           setup.tableColumns.map((col:any,index)=>(
             <TableComponentColumn key={col.key} columnName={col.name}/>
           ))
         }
-        </TableComponent>
+        </TableComponentClass>
         <ButtonComponent id={""} caption={'Add'} variant={''} onClick={addRecord} size={''} active={false} disabled={false} type={undefined} />
         {!showDeleteBtn?
         <ButtonComponent id={""} caption={'Delete'} variant={'danger'} onClick={deleteHandle} size={''} active={false} disabled={false} type={undefined} />

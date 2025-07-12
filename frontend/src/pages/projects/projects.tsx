@@ -48,7 +48,7 @@ export default function Projects(){
       <Row>
       <Col>
       </Col>
-      <Col xs={12} md={6} >
+      <Col xs={12} lg={6}>
       <div className=''>
         <p hidden={true} >Here a list of projects which I have worked on in my spare time. Some will have links to GitHub Repository links other not because of it sensitive nature.</p>
       </div>
@@ -58,13 +58,18 @@ export default function Projects(){
       <Spinner animation="border" variant="primary" />
       </div>
       :null}
+      <Row>
       {
         projects.map((project,key)=>(
+        
+        <Col xs={13} md={6}>
         <ListGroup.Item>
         <ProjectCard repositoryClicks={project.repositoryClicks} views={project.views} name={project.name} description={project.description} url={project.url} key={project._id} id={project._id} project={project} login={login}/>
         </ListGroup.Item>
+        </Col>
         ))
       }
+      </Row>
       </ListGroup>
       </Col>
         <Col></Col>

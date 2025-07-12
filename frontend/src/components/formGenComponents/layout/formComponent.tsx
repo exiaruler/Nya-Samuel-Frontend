@@ -3,29 +3,21 @@ import { useParams } from "react-router";
 import FormGenLibary from "../FormGenLibary";
 import { Alert, Button, Col, Form, ProgressBar, Row, Spinner } from "react-bootstrap";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+//import { useNavigate,useLocation } from "react-router-dom";
 import { Component } from "../../../base/interfaces/component";
 import BackButton from "../../Buttons/BackButton";
 import { SaveButton } from "../../Buttons/SaveButton";
 import { ButtonComponent } from "../../Buttons/ButtonComponent";
 import { FormAPI } from "../../../api/FormAPI";
 import UiBase from "../../../base/UiBase";
-interface Props{
-  form?:any;
-  record?:any;
-  entry?:Boolean;
-  clearHandle?:CallableFunction;
-  submitHandle?:CallableFunction;
-  clearAction?:Boolean;
-  id:string;
-  formId:string;
-  valueKey:string;
-  onClick?:CallableFunction;
-}
+import {FormInterface} from "./formInterface";
+
 // cross compatible component
-const form=forwardRef (function FormComponent(props:Props,ref){
-  let formJson;
-  let location = useLocation();
+const  FormLayout=forwardRef (function FormComponent(props:FormInterface,ref){
+  console.log(props);
+  const formRef:any=useRef(null);
+  //let formJson;
+  //let location = useLocation();
   const [formLay,setFormLay]=useState({
     urlLocation:"",
     formName:"",
@@ -38,7 +30,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
     settingOverride:false,
     form:null
   });
-  const currentForm=location.pathname;
+  const currentForm='';
   // form used in entry record page
   let entryUsed=false;
   // used for settings
@@ -60,7 +52,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
     error:""
   });
   let keyArr:any=useRef([]);
-  const nav=useNavigate();
+  //const nav=useNavigate();
   const base=new UiBase();
   const formLib= new FormGenLibary();
   
@@ -75,11 +67,12 @@ const form=forwardRef (function FormComponent(props:Props,ref){
   const setFormProp=()=>{
     errorClearRef.current=[];
     if(props.form){
-      formJson=props.form;
+      var formJson=props.form;
+      formRef.current=props.form;
       setLoadState(10);
       if(formJson){
         setFormLay({
-          urlLocation:location.pathname,
+          urlLocation:'',
           formName:formJson.name,
           postapi:base.util.getApiUrl()+formJson.postApi,
           updateapi:base.util.getApiUrl()+formJson.updateApi,
@@ -135,7 +128,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
     const renderModel=new Promise<void>((resolve,reject)=>{
       if(formObj.stateModel){
         setFormLay({
-          urlLocation:location.pathname,
+          urlLocation:'',
           formName:formObj.name,
           postapi:base.util.getApiUrl()+formObj.postApi,
           updateapi:base.util.getApiUrl()+formObj.updateApi,
@@ -162,7 +155,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
         }
         setFormError(errorJson);
         setLoadState(50);
-        renderFormFields(formObj.form,keyArr.current,formObj.setting);
+        //renderFormFields(formObj.form,keyArr.current,formObj.setting);
       },
       // display error message
       function(){
@@ -192,7 +185,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
         hide:true,
         error:""
     });
-    if(!entryUsed)nav("/form/"+formId+"/0",{ state:{ login:true} });
+    if(!entryUsed)
     writeError(errorClearRef.current);
     if(props.entry&&props.clearHandle){
       props.clearHandle(update);
@@ -389,7 +382,7 @@ const form=forwardRef (function FormComponent(props:Props,ref){
       id="0";
       if(entryUsed)clearForm(true);
       if(!entryUsed){
-        nav(formLay.redirect,{ state:{ login:true} });
+        //nav(formLay.redirect,{ state:{ login:true} });
       }else if(props.submitHandle) {
         props.submitHandle();
       }
@@ -431,6 +424,8 @@ const form=forwardRef (function FormComponent(props:Props,ref){
       clearError
     }
   },[]);
+  
+  /*
   if(changeForm()){
     const form:any=document.getElementById('FormRender') as HTMLElement;
     //form.innerHTML=""
@@ -444,10 +439,11 @@ const form=forwardRef (function FormComponent(props:Props,ref){
       insertValuesEntry(record.current);
     }else id="0";
   }
-  
+  */
+ //setFormProp();
   useEffect(() => {
-     setFormProp();
-  },[]);
+    setFormProp();
+  },[formRef]);
   return(
     <div>
     <Row>
@@ -500,4 +496,4 @@ const form=forwardRef (function FormComponent(props:Props,ref){
 
     </div>);
 });
-export default form;
+export default  FormLayout;

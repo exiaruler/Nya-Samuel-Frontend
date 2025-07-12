@@ -38,6 +38,9 @@
   .form-text{
     font-size: 15px;
   }
+  .form-error{
+    padding-left: 5px;
+  }
   .paragraph-body{
     margin: 20px;
     white-space: pre-line;

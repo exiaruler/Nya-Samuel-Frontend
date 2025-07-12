@@ -24,6 +24,11 @@ export default class UiBase {
     public getPageUrl(url:string){
         return this.pages.find((pa:page)=>pa.url===url&&pa.show===true);
     }
+    public checkPageUrl(url:any){
+        var res=false;
+        if(this.getPageUrl(url)!=undefined) res=true;
+        return res;
+    }
     public createUrl(page:page){
         let url=page.url;
         if(page.loadParam!=""){
@@ -37,8 +42,16 @@ export default class UiBase {
     public getPagesSession(){
         return this.util.getPagesSession();
     }
+    public booleanStatus(bool:boolean){
+        var show="Inactive";
+        if(bool) show="Active";
+        return show;
+    }
     // form on change handler
     public onChange(key:any,value:any,setForm:any,form:any){
         setForm({...form,[key]:value});
+    }
+    public onChangeObject(key:any,value:any,setForm:any,form:any){
+        setForm({...form,[key]:JSON.parse(value)});
     }
 }

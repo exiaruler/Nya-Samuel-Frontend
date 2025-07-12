@@ -66,7 +66,6 @@ export default function ProjectRecord(props:any){
         <Col>
         {showLinks?
         <div id="LinksDiv" className="CentreText">
-        <h2>GitHub</h2>
         <a href={project.url} onClick={repositoryHandle}><img src={GitHubLogo} width={30} height={30} alt="GitRepo"/></a>
         </div>
         :null}

@@ -3,7 +3,7 @@ import { ChangeEventHandler, Component } from "react";
 import { Form, Row } from "react-bootstrap";
 import { props } from "./FieldProps";
 type Props={
-    label?:string,
+    label:string,
     name?:string,
     required?:boolean,
     onChange?:ChangeEventHandler
@@ -12,7 +12,7 @@ type Props={
     size:any,
     valueKey:string,
     valueDisplayKey:string,
-    data?:Array<Object>,
+    data?:Array<any>,
     api?:string,
 }
 export class FormGenCombo extends Component<props>{

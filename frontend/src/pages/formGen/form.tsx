@@ -12,6 +12,7 @@ import UiBase from "../../base/UiBase";
 import Group from "../../components/Group";
 interface Props{
   form?:any;
+  externalUrl?:string,
   record?:any;
   entry?:Boolean;
   clearHandle?:CallableFunction;

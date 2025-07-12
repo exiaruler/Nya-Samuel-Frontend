@@ -14,7 +14,7 @@ type Props={
     onClick?:CallableFunction;
     onDoubleClick?:CallableFunction;
 }
-
+// redundant
 const TableComponent=forwardRef(function TableComponent(props:Props,ref){
     var rowSelect=false||props.rowSelect;
     var width='';

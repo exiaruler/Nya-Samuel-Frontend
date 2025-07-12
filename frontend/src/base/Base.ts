@@ -2,15 +2,15 @@ import CryptoJS from 'crypto-js';
 // api domain and key
 class Base{
 
-  public originUrl=window.location.origin;
+  public originUrl=this.getOriginUrl();
   
   private apiURlBase=process.env.REACT_APP_API_URL||"http://localhost:8000/api";
   // dev key
   private apikey=process.env.REACT_APP_API_KEY||"S7fgxFOTKTK8aCjq";
   // encryption key
-  private encryptKey:string=process.env.REACT_APP_API_ENCRYPTKEY||"";
+  public encryptKey:string=process.env.REACT_APP_API_ENCRYPTKEY||"";
   // js vanilla fetch
-   public apiCallConfig(method:string,body=null){
+  public apiCallConfig(method:string,body:any=null){
       let date=new Date();
       var config:any={
         method:method,
@@ -24,6 +24,9 @@ class Base{
         },
       };
       if(body!=null){
+        if(typeof body!='string'){
+          body=JSON.stringify(body);
+        }
         config={
           method:method,
           credentials: 'include',
@@ -48,6 +51,13 @@ class Base{
       const request=await fetch(url,config);
       return request;
     }
+    public getOriginUrl(){
+      var url='http://localhost:3000';
+      if(typeof window !== 'undefined'){
+        url=window.location.origin;
+      }
+      return url;
+    }
 
     public checkEnv(){
       var result=false;
@@ -69,7 +79,7 @@ class Base{
       }
       return url;
     }
-  
+    
     public encryptValue(value:string){
       var encryption=value;
       if(this.encryptKey!=undefined&&this.encryptKey!=""){
@@ -84,6 +94,15 @@ class Base{
         convert = bytes.toString(CryptoJS.enc.Utf8);
       }
       return convert;
+    }
+    public generateEncryptKey(){
+      var length=20;
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
     }
       
 }

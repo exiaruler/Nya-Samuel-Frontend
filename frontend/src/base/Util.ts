@@ -4,14 +4,13 @@ import { CommonAPI } from '../api/CommonAPI';
 import { page } from './interfaces/page';
 export class Util extends Base {
 
-  
     // converts date to show month style
   public  dateConversionMonth(date:any){
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const dateArr=date.split("/");
         const month = months[dateArr[0]];
         return dateArr[1]+" "+month+" "+dateArr[2]
-    }
+  }
   public elementGet(elementId:any){
       const get=document.getElementById(elementId);
       if(get!=null){
@@ -103,11 +102,13 @@ export class Util extends Base {
         return data;
     }
 
-    public async fetchRequest(api:string,method:string="GET",body=null){
+    public async fetchRequest(api:string,method:string="GET",body:any=null,externalUrl:string=""){
       var config=this.apiCallConfig(method.toUpperCase(),body);
       var request:any;
+      var baseUrl=this.getApiUrl();
+      if(externalUrl!=="") baseUrl=externalUrl;
       try{
-        request=await fetch(this.getApiUrl()+api,config);
+        request=await fetch(baseUrl+api,config);
       }catch(err){
         this.throwError(err);
       }
